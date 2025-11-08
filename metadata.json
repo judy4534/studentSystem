@@ -1,0 +1,5 @@
+{
+  "name": "University Course Registration System",
+  "description": "A comprehensive system for university students, professors, and administrators to manage course registration, grades, and academic information. This application provides role-based dashboards for a tailored user experience.",
+  "requestFramePermissions": []
+}
