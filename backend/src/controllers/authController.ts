@@ -1,7 +1,7 @@
 // Fix: Import Request, Response, NextFunction from express
 import { Request, Response, NextFunction } from 'express';
 import User from '../models/User';
-import jwt from 'jsonwebtoken';
+import jwt, { Secret, SignOptions } from 'jsonwebtoken';
 import type { IUser } from '../types/models';
 // Fix: Add missing import for mongoose
 import mongoose from 'mongoose';
@@ -11,10 +11,13 @@ const generateToken = (id: mongoose.Types.ObjectId) => {
         console.error('FATAL ERROR: JWT_SECRET is not defined.');
         throw new Error('JWT_SECRET is not defined.');
     }
-    // Fix: Add non-null assertion to JWT_SECRET to satisfy typescript compiler
-    return jwt.sign({ id }, process.env.JWT_SECRET!, {
-        expiresIn: process.env.JWT_EXPIRES_IN || '7d', // Provide default value
-    });
+    const secret: Secret = process.env.JWT_SECRET;
+    const expiresInEnv = process.env.JWT_EXPIRES_IN;
+    const expiresIn: SignOptions['expiresIn'] = expiresInEnv
+        ? (expiresInEnv as SignOptions['expiresIn'])
+        : '7d';
+    const signOptions: SignOptions = { expiresIn };
+    return jwt.sign({ id: id.toString() }, secret, signOptions);
 };
 
 // Fix: Add express types to function signature
