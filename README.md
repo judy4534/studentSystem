@@ -31,24 +31,24 @@ Backend API for the Student Management System built with Node.js, Express, TypeS
 
 ## Prerequisites
 
-- Node.js (v18 or higher)
+- Node.js (v20 or higher)
 - MongoDB (local or cloud instance)
-- npm or yarn
+- npm
 
 ## Installation
 
 1. Clone the repository:
 ```bash
 git clone <repository-url>
-cd studentSystem-backend
+cd university-course-registration-system
 ```
 
-2. Install dependencies:
+2. Install dependencies from the root directory:
 ```bash
 npm install
 ```
 
-3. Create a `.env` file in the root directory:
+3. Create a `.env` file in the root directory with the following content:
 ```env
 # Server Configuration
 PORT=5000
@@ -62,26 +62,30 @@ JWT_SECRET=your-super-secret-jwt-key-change-this-in-production
 JWT_EXPIRES_IN=7d
 
 # CORS Configuration
-FRONTEND_URL=http://localhost:3000
+FRONTEND_URL=http://localhost:5173
 
 # Rate Limiting
 RATE_LIMIT_WINDOW_MS=900000
 RATE_LIMIT_MAX_REQUESTS=100
 ```
 
-4. Build the TypeScript code:
-```bash
-npm run build
-```
-
 ## Running the Application
 
 ### Development Mode
+This project has separate scripts for the frontend and backend. You should run them in separate terminals from the root directory.
+
+- **Run Frontend (Vite dev server):**
 ```bash
 npm run dev
 ```
 
+- **Run Backend (Nodemon server):**
+```bash
+npm run dev:backend
+```
+
 ### Production Mode
+This command builds both the frontend and backend, then starts the production server.
 ```bash
 npm run build
 npm start
@@ -89,11 +93,10 @@ npm start
 
 ## Database Seeding
 
-To populate the database with initial data, run:
+To populate the database with initial data, run the following command from the root directory. Make sure your MongoDB server is running.
 
 ```bash
-# Make sure MongoDB is running first
-npx ts-node src/seed.ts
+npx ts-node backend/src/seed.ts
 ```
 
 This will create:
@@ -107,6 +110,39 @@ This will create:
 - Professor: `professor@university.edu`
 - Student: `student@university.edu`
 - Password: `password123` (for all accounts)
+
+## Deployment on Render
+
+This project is configured to be deployed as a single **Web Service** on Render, where the Node.js backend serves both the API and the built React frontend.
+
+### 1. Database Setup
+Before deploying, you need a live MongoDB database. A free tier on **[MongoDB Atlas](https://www.mongodb.com/cloud/atlas)** is highly recommended.
+- Create an account and a new cluster.
+- In "Network Access", add `0.0.0.0/0` to allow connections from anywhere (Render's IP addresses can change).
+- Create a database user and save the username and password.
+- Get the connection string for your application and replace `<password>` with your user's password.
+
+### 2. Render Web Service Configuration
+1.  From your Render dashboard, click **New** -> **Web Service**.
+2.  Connect the GitHub repository for this project.
+3.  On the settings page, use the following configuration:
+    -   **Name**: A name for your service (e.g., `university-system`).
+    -   **Root Directory**: Leave this blank to use the repository root.
+    -   **Environment**: `Node`.
+    -   **Build Command**: `npm install && npm run build`
+    -   **Start Command**: `npm start`
+    -   **Instance Type**: The `Free` tier is suitable for development and testing.
+
+### 3. Environment Variables
+Click on the **Environment** tab and add the following variables.
+-   **`NODE_ENV`**: `production`
+-   **`MONGODB_URI`**: The connection string from MongoDB Atlas.
+-   **`JWT_SECRET`**: A long, random, and secret string for signing tokens (you can generate one with `openssl rand -base64 32`).
+-   **`FRONTEND_URL`**: The URL of your Render service once it's live (it will look like `https://your-service-name.onrender.com`).
+
+### 4. Deploy
+Click **Create Web Service**. Render will begin the build and deployment process. You can monitor the progress in the logs. Once complete, your application will be live at the URL provided by Render.
+
 
 ## API Endpoints
 
@@ -185,37 +221,33 @@ The API implements rate limiting to prevent abuse:
 | MONGODB_URI | MongoDB connection string | mongodb://localhost:27017/student-system |
 | JWT_SECRET | JWT secret key | (required) |
 | JWT_EXPIRES_IN | JWT expiration time | 7d |
-| FRONTEND_URL | Frontend URL for CORS | http://localhost:3000 |
+| FRONTEND_URL | Frontend URL for CORS | http://localhost:5173 |
 | RATE_LIMIT_WINDOW_MS | Rate limit window in ms | 900000 |
 | RATE_LIMIT_MAX_REQUESTS | Max requests per window | 100 |
 
 ## Project Structure
 
 ```
-src/
-├── config/
-│   └── database.ts       # Database configuration
-├── controllers/
-│   ├── authController.ts # Authentication logic
-│   ├── userController.ts # User management logic
-│   └── courseController.ts # Course management logic
-├── middleware/
-│   ├── auth.ts          # Authentication middleware
-│   ├── errorHandler.ts  # Error handling middleware
-│   └── validate.ts      # Input validation middleware
-├── models/
-│   ├── User.ts          # User model
-│   ├── Course.ts        # Course model
-│   └── ...              # Other models
-├── routes/
-│   ├── auth.ts          # Authentication routes
-│   ├── users.ts         # User routes
-│   └── courses.ts       # Course routes
-├── types/
-│   └── index.ts         # TypeScript type definitions
-├── utils/
-│   └── ...              # Utility functions
-├── index.ts             # Main server file
-└── seed.ts              # Database seeding script
+backend/
+└── src/
+    ├── config/
+    │   └── database.ts       # Database configuration
+    ├── controllers/
+    │   ├── authController.ts # Authentication logic
+    │   └── ...
+    ├── middleware/
+    │   ├── auth.ts          # Authentication middleware
+    │   └── ...
+    ├── models/
+    │   ├── User.ts          # User model
+    │   └── ...
+    ├── routes/
+    │   ├── auth.ts          # Authentication routes
+    │   └── ...
+    ├── types/
+    │   ├── express/
+    │   │   └── index.d.ts    # Express type augmentation
+    │   └── models.ts         # Mongoose model type definitions
+    ├── index.ts              # Main server file
+    └── seed.ts               # Database seeding script
 ```
-"# student-webapp" 

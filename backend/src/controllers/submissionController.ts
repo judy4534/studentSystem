@@ -1,11 +1,10 @@
-// Fix: Import Request, Response, NextFunction from express
-import { Request, Response, NextFunction } from 'express';
-import CourseSubmission from '../models/CourseSubmission';
-import Enrollment from '../models/Enrollment';
-import Semester from '../models/Semester';
 
-// Fix: Add express types to function signature
-export const getAllSubmissions = async (req: Request, res: Response, next: NextFunction) => {
+import express from 'express';
+import CourseSubmission from '../models/CourseSubmission.js';
+import Enrollment from '../models/Enrollment.js';
+import Semester from '../models/Semester.js';
+
+export const getAllSubmissions = async (req: express.Request, res: express.Response, next: express.NextFunction) => {
     try {
         const submissions = await CourseSubmission.find({});
         res.status(200).json({ success: true, data: submissions });
@@ -14,8 +13,7 @@ export const getAllSubmissions = async (req: Request, res: Response, next: NextF
     }
 };
 
-// Fix: Add express types to function signature
-export const createSubmission = async (req: Request, res: Response, next: NextFunction) => {
+export const createSubmission = async (req: express.Request, res: express.Response, next: express.NextFunction) => {
     const { courseId } = req.body;
     try {
         const openSemester = await Semester.findOne({ status: 'مفتوح' });

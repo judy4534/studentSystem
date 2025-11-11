@@ -1,3 +1,4 @@
+
 import express from 'express';
 import {
     getAllCourses,
@@ -6,8 +7,8 @@ import {
     updateCourse,
     deleteCourse,
     getCoursesByProfessor,
-} from '../controllers/courseController';
-import { protect, authorize } from '../middleware/auth';
+} from '../controllers/courseController.js';
+import { protect, authorize } from '../middleware/auth.js';
 
 const router = express.Router();
 

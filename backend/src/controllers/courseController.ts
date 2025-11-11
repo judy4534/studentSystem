@@ -1,13 +1,12 @@
-// Fix: Import Request, Response, NextFunction from express
-import { Request, Response, NextFunction } from 'express';
-import Course from '../models/Course';
-import ProfessorCourseAssignment from '../models/ProfessorCourseAssignment';
+
+import express from 'express';
+import Course from '../models/Course.js';
+import ProfessorCourseAssignment from '../models/ProfessorCourseAssignment.js';
 
 // @desc    Get all courses
 // @route   GET /api/courses
 // @access  Private
-// Fix: Add express types to function signature
-export const getAllCourses = async (req: Request, res: Response, next: NextFunction) => {
+export const getAllCourses = async (req: express.Request, res: express.Response, next: express.NextFunction) => {
     try {
         const courses = await Course.find({}).populate('department', 'name');
         res.status(200).json({ success: true, data: courses });
@@ -19,8 +18,7 @@ export const getAllCourses = async (req: Request, res: Response, next: NextFunct
 // @desc    Get single course
 // @route   GET /api/courses/:id
 // @access  Private
-// Fix: Add express types to function signature
-export const getCourseById = async (req: Request, res: Response, next: NextFunction) => {
+export const getCourseById = async (req: express.Request, res: express.Response, next: express.NextFunction) => {
     try {
         const course = await Course.findById(req.params.id);
         if (!course) {
@@ -35,8 +33,7 @@ export const getCourseById = async (req: Request, res: Response, next: NextFunct
 // @desc    Create a course
 // @route   POST /api/courses
 // @access  Private/Admin
-// Fix: Add express types to function signature
-export const createCourse = async (req: Request, res: Response, next: NextFunction) => {
+export const createCourse = async (req: express.Request, res: express.Response, next: express.NextFunction) => {
     try {
         const course = await Course.create(req.body);
         res.status(201).json({ success: true, data: course });
@@ -48,8 +45,7 @@ export const createCourse = async (req: Request, res: Response, next: NextFuncti
 // @desc    Update a course
 // @route   PUT /api/courses/:id
 // @access  Private/Admin
-// Fix: Add express types to function signature
-export const updateCourse = async (req: Request, res: Response, next: NextFunction) => {
+export const updateCourse = async (req: express.Request, res: express.Response, next: express.NextFunction) => {
     try {
         const course = await Course.findByIdAndUpdate(req.params.id, req.body, {
             new: true,
@@ -67,8 +63,7 @@ export const updateCourse = async (req: Request, res: Response, next: NextFuncti
 // @desc    Delete a course
 // @route   DELETE /api/courses/:id
 // @access  Private/Admin
-// Fix: Add express types to function signature
-export const deleteCourse = async (req: Request, res: Response, next: NextFunction) => {
+export const deleteCourse = async (req: express.Request, res: express.Response, next: express.NextFunction) => {
     try {
         const course = await Course.findByIdAndDelete(req.params.id);
         if (!course) {
@@ -83,11 +78,10 @@ export const deleteCourse = async (req: Request, res: Response, next: NextFuncti
 // @desc    Get courses by professor
 // @route   GET /api/courses/professor/:professorId
 // @access  Private/Admin/Professor
-// Fix: Add express types to function signature
-export const getCoursesByProfessor = async (req: Request, res: Response, next: NextFunction) => {
+export const getCoursesByProfessor = async (req: express.Request, res: express.Response, next: express.NextFunction) => {
     try {
         const assignments = await ProfessorCourseAssignment.find({ professor: req.params.professorId }).populate('course');
-        const courses = assignments.map(a => a.course);
+        const courses = assignments.map((a: any) => a.course);
         res.status(200).json({ success: true, data: courses });
     } catch (error) {
         next(error);

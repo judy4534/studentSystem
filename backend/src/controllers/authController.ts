@@ -1,9 +1,8 @@
-// Fix: Import Request, Response, NextFunction from express
-import { Request, Response, NextFunction } from 'express';
-import User from '../models/User';
-import jwt, { Secret, SignOptions } from 'jsonwebtoken';
-import type { IUser } from '../types/models';
-// Fix: Add missing import for mongoose
+
+import express from 'express';
+import User from '../models/User.js';
+import jwt, { SignOptions } from 'jsonwebtoken';
+import type { IUser } from '../types/models.js';
 import mongoose from 'mongoose';
 
 const generateToken = (id: mongoose.Types.ObjectId) => {
@@ -11,17 +10,17 @@ const generateToken = (id: mongoose.Types.ObjectId) => {
         console.error('FATAL ERROR: JWT_SECRET is not defined.');
         throw new Error('JWT_SECRET is not defined.');
     }
-    const secret: Secret = process.env.JWT_SECRET;
-    const expiresInEnv = process.env.JWT_EXPIRES_IN;
-    const expiresIn: SignOptions['expiresIn'] = expiresInEnv
-        ? (expiresInEnv as SignOptions['expiresIn'])
-        : '7d';
-    const signOptions: SignOptions = { expiresIn };
-    return jwt.sign({ id: id.toString() }, secret, signOptions);
+    
+    const expiresIn = process.env.JWT_EXPIRES_IN || '7d';
+
+    const options: SignOptions = {
+        expiresIn,
+    };
+
+    return jwt.sign({ id }, process.env.JWT_SECRET, options);
 };
 
-// Fix: Add express types to function signature
-export const login = async (req: Request, res: Response, next: NextFunction) => {
+export const login = async (req: express.Request, res: express.Response, next: express.NextFunction) => {
     try {
         const { email, password } = req.body;
 
@@ -49,8 +48,7 @@ export const login = async (req: Request, res: Response, next: NextFunction) => 
     }
 };
 
-// Fix: Add express types to function signature
-export const getProfile = async (req: Request, res: Response, next: NextFunction) => {
+export const getProfile = async (req: express.Request, res: express.Response, next: express.NextFunction) => {
     try {
         // req.user is populated by the 'protect' middleware
         res.status(200).json({ success: true, data: req.user });
@@ -59,8 +57,7 @@ export const getProfile = async (req: Request, res: Response, next: NextFunction
     }
 };
 
-// Fix: Add express types to function signature
-export const logout = (req: Request, res: Response, next: NextFunction) => {
+export const logout = (req: express.Request, res: express.Response, next: express.NextFunction) => {
     // In a stateless JWT setup, logout is typically handled client-side by deleting the token.
     // A stateful approach would involve a token blacklist.
     res.status(200).json({ success: true, message: 'Logged out successfully' });

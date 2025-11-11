@@ -1,9 +1,8 @@
-// Fix: Import Request, Response, NextFunction from express
-import { Request, Response, NextFunction } from 'express';
-import Semester from '../models/Semester';
 
-// Fix: Add express types to function signature
-export const getAllSemesters = async (req: Request, res: Response, next: NextFunction) => {
+import express from 'express';
+import Semester from '../models/Semester.js';
+
+export const getAllSemesters = async (req: express.Request, res: express.Response, next: express.NextFunction) => {
     try {
         const semesters = await Semester.find({}).sort({ startDate: -1 });
         res.status(200).json({ success: true, data: semesters });
@@ -12,8 +11,7 @@ export const getAllSemesters = async (req: Request, res: Response, next: NextFun
     }
 };
 
-// Fix: Add express types to function signature
-export const createSemester = async (req: Request, res: Response, next: NextFunction) => {
+export const createSemester = async (req: express.Request, res: express.Response, next: express.NextFunction) => {
     try {
         const semester = await Semester.create(req.body);
         res.status(201).json({ success: true, data: semester });
@@ -22,8 +20,7 @@ export const createSemester = async (req: Request, res: Response, next: NextFunc
     }
 };
 
-// Fix: Add express types to function signature
-export const updateSemester = async (req: Request, res: Response, next: NextFunction) => {
+export const updateSemester = async (req: express.Request, res: express.Response, next: express.NextFunction) => {
     try {
         const semester = await Semester.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true });
         if (!semester) {
@@ -35,8 +32,7 @@ export const updateSemester = async (req: Request, res: Response, next: NextFunc
     }
 };
 
-// Fix: Add express types to function signature
-export const deleteSemester = async (req: Request, res: Response, next: NextFunction) => {
+export const deleteSemester = async (req: express.Request, res: express.Response, next: express.NextFunction) => {
     try {
         const semester = await Semester.findByIdAndDelete(req.params.id);
         if (!semester) {

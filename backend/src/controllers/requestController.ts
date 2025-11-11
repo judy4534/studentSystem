@@ -1,11 +1,10 @@
-// Fix: Import Request, Response, NextFunction from express
-import { Request, Response, NextFunction } from 'express';
-import RegistrationRequest from '../models/Request';
-import Enrollment from '../models/Enrollment';
-import Semester from '../models/Semester';
 
-// Fix: Add express types to function signature
-export const getAllRequests = async (req: Request, res: Response, next: NextFunction) => {
+import express from 'express';
+import RegistrationRequest from '../models/Request.js';
+import Enrollment from '../models/Enrollment.js';
+import Semester from '../models/Semester.js';
+
+export const getAllRequests = async (req: express.Request, res: express.Response, next: express.NextFunction) => {
     try {
         const requests = await RegistrationRequest.find({})
             .populate('student', 'name studentId')
@@ -16,8 +15,7 @@ export const getAllRequests = async (req: Request, res: Response, next: NextFunc
     }
 };
 
-// Fix: Add express types to function signature
-export const createRequest = async (req: Request, res: Response, next: NextFunction) => {
+export const createRequest = async (req: express.Request, res: express.Response, next: express.NextFunction) => {
     const { studentId, courseId, requestType } = req.body;
     try {
         const request = await RegistrationRequest.create({
@@ -31,8 +29,7 @@ export const createRequest = async (req: Request, res: Response, next: NextFunct
     }
 };
 
-// Fix: Add express types to function signature
-export const approveRequest = async (req: Request, res: Response, next: NextFunction) => {
+export const approveRequest = async (req: express.Request, res: express.Response, next: express.NextFunction) => {
     try {
         const request = await RegistrationRequest.findById(req.params.id);
         if (!request) {
@@ -59,8 +56,7 @@ export const approveRequest = async (req: Request, res: Response, next: NextFunc
     }
 };
 
-// Fix: Add express types to function signature
-export const rejectRequest = async (req: Request, res: Response, next: NextFunction) => {
+export const rejectRequest = async (req: express.Request, res: express.Response, next: express.NextFunction) => {
     try {
         const request = await RegistrationRequest.findByIdAndUpdate(
             req.params.id,

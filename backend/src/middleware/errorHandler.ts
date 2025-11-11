@@ -1,8 +1,6 @@
-// Fix: Import Request, Response, NextFunction from express
-import { Request, Response, NextFunction } from 'express';
+import express from 'express';
 
-// Fix: Add express types to function signature
-const errorHandler = (err: any, req: Request, res: Response, next: NextFunction) => {
+const errorHandler = (err: any, req: express.Request, res: express.Response, next: express.NextFunction) => {
     console.error(err.stack);
 
     const statusCode = err.statusCode || 500;

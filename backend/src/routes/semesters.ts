@@ -1,11 +1,12 @@
+
 import express from 'express';
 import {
     getAllSemesters,
     createSemester,
     updateSemester,
     deleteSemester
-} from '../controllers/semesterController';
-import { protect, authorize } from '../middleware/auth';
+} from '../controllers/semesterController.js';
+import { protect, authorize } from '../middleware/auth.js';
 
 const router = express.Router();
 

@@ -1,9 +1,8 @@
-// Fix: Import Request, Response, NextFunction from express
-import { Request, Response, NextFunction } from 'express';
-import Notification from '../models/Notification';
 
-// Fix: Add express types to function signature
-export const getAllNotifications = async (req: Request, res: Response, next: NextFunction) => {
+import express from 'express';
+import Notification from '../models/Notification.js';
+
+export const getAllNotifications = async (req: express.Request, res: express.Response, next: express.NextFunction) => {
     try {
         const notifications = await Notification.find({ user: req.user?._id }).sort({ createdAt: -1 });
         res.status(200).json({ success: true, data: notifications });
@@ -12,8 +11,7 @@ export const getAllNotifications = async (req: Request, res: Response, next: Nex
     }
 };
 
-// Fix: Add express types to function signature
-export const markAsRead = async (req: Request, res: Response, next: NextFunction) => {
+export const markAsRead = async (req: express.Request, res: express.Response, next: express.NextFunction) => {
     try {
         const notification = await Notification.findById(req.params.id);
         if (!notification || notification.user.toString() !== req.user?._id.toString()) {
@@ -27,8 +25,7 @@ export const markAsRead = async (req: Request, res: Response, next: NextFunction
     }
 };
 
-// Fix: Add express types to function signature
-export const markAllAsRead = async (req: Request, res: Response, next: NextFunction) => {
+export const markAllAsRead = async (req: express.Request, res: express.Response, next: express.NextFunction) => {
     try {
         await Notification.updateMany({ user: req.user?._id, read: false }, { read: true });
         res.status(204).send();
@@ -37,8 +34,7 @@ export const markAllAsRead = async (req: Request, res: Response, next: NextFunct
     }
 };
 
-// Fix: Add express types to function signature
-export const createReminderNotification = async (req: Request, res: Response, next: NextFunction) => {
+export const createReminderNotification = async (req: express.Request, res: express.Response, next: express.NextFunction) => {
     const { professorId, courseName } = req.body;
     try {
         const notification = await Notification.create({

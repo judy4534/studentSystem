@@ -1,4 +1,3 @@
-// Fix: Add export {} to make this file a module and allow global augmentation.
 export {};
 
 declare global {

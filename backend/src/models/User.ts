@@ -1,6 +1,7 @@
-import mongoose from 'mongoose';
+
+import mongoose, { HookNextFunction } from 'mongoose';
 import bcrypt from 'bcryptjs';
-import type { IUser } from '../types/models';
+import { IUser } from '../types/models.js';
 
 const userSchema = new mongoose.Schema({
     name: {
@@ -41,18 +42,20 @@ const userSchema = new mongoose.Schema({
 });
 
 // Password hashing middleware
-userSchema.pre<IUser>('save', async function () {
+// FIX: Use the generic form of `.pre<IUser>()` to correctly type `this` and allow access to Mongoose document methods like `isModified`.
+userSchema.pre<IUser>('save', async function (next: HookNextFunction) {
     if (!this.isModified('password')) {
-        return;
+        return next();
     }
     const salt = await bcrypt.genSalt(10);
     this.password = await bcrypt.hash(this.password, salt);
+    next();
 });
 
 // Method to compare passwords
 userSchema.methods.matchPassword = async function (this: IUser, enteredPassword: string): Promise<boolean> {
-    return bcrypt.compare(enteredPassword, this.password);
+    return await bcrypt.compare(enteredPassword, this.password);
 };
 
-const User = mongoose.model('User', userSchema);
+const User = mongoose.model<IUser>('User', userSchema);
 export default User;

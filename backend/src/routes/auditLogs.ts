@@ -1,6 +1,7 @@
+
 import express from 'express';
-import { getAllAuditLogs } from '../controllers/auditLogController';
-import { protect, authorize } from '../middleware/auth';
+import { getAllAuditLogs } from '../controllers/auditLogController.js';
+import { protect, authorize } from '../middleware/auth.js';
 
 const router = express.Router();
 

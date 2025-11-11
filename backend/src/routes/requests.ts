@@ -1,11 +1,12 @@
+
 import express from 'express';
 import {
     getAllRequests,
     createRequest,
     approveRequest,
     rejectRequest
-} from '../controllers/requestController';
-import { protect, authorize } from '../middleware/auth';
+} from '../controllers/requestController.js';
+import { protect, authorize } from '../middleware/auth.js';
 
 const router = express.Router();
 

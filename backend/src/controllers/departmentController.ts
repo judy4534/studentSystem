@@ -1,11 +1,10 @@
-// Fix: Import Request, Response, NextFunction from express
-import { Request, Response, NextFunction } from 'express';
-import Department from '../models/Department';
-import Course from '../models/Course';
-import User from '../models/User';
 
-// Fix: Add express types to function signature
-export const getAllDepartments = async (req: Request, res: Response, next: NextFunction) => {
+import express from 'express';
+import Department from '../models/Department.js';
+import Course from '../models/Course.js';
+import User from '../models/User.js';
+
+export const getAllDepartments = async (req: express.Request, res: express.Response, next: express.NextFunction) => {
     try {
         const departments = await Department.find({});
         // Dynamically calculate counts
@@ -29,8 +28,7 @@ export const getAllDepartments = async (req: Request, res: Response, next: NextF
     }
 };
 
-// Fix: Add express types to function signature
-export const createDepartment = async (req: Request, res: Response, next: NextFunction) => {
+export const createDepartment = async (req: express.Request, res: express.Response, next: express.NextFunction) => {
     try {
         const department = await Department.create(req.body);
         res.status(201).json({ success: true, data: department });
@@ -39,8 +37,7 @@ export const createDepartment = async (req: Request, res: Response, next: NextFu
     }
 };
 
-// Fix: Add express types to function signature
-export const updateDepartment = async (req: Request, res: Response, next: NextFunction) => {
+export const updateDepartment = async (req: express.Request, res: express.Response, next: express.NextFunction) => {
     try {
         const department = await Department.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true });
         if (!department) {
@@ -52,8 +49,7 @@ export const updateDepartment = async (req: Request, res: Response, next: NextFu
     }
 };
 
-// Fix: Add express types to function signature
-export const deleteDepartment = async (req: Request, res: Response, next: NextFunction) => {
+export const deleteDepartment = async (req: express.Request, res: express.Response, next: express.NextFunction) => {
     try {
         const department = await Department.findByIdAndDelete(req.params.id);
         if (!department) {

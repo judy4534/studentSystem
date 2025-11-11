@@ -1,11 +1,12 @@
+
 import express from 'express';
 import {
     getAllEnrollments,
     enrollStudent,
     unenrollStudent,
     updateGrade
-} from '../controllers/enrollmentController';
-import { protect, authorize } from '../middleware/auth';
+} from '../controllers/enrollmentController.js';
+import { protect, authorize } from '../middleware/auth.js';
 
 const router = express.Router();
 

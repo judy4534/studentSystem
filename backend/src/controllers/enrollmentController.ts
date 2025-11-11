@@ -1,10 +1,9 @@
-// Fix: Import Request, Response, NextFunction from express
-import { Request, Response, NextFunction } from 'express';
-import Enrollment from '../models/Enrollment';
-import Semester from '../models/Semester';
 
-// Fix: Add express types to function signature
-export const getAllEnrollments = async (req: Request, res: Response, next: NextFunction) => {
+import express from 'express';
+import Enrollment from '../models/Enrollment.js';
+import Semester from '../models/Semester.js';
+
+export const getAllEnrollments = async (req: express.Request, res: express.Response, next: express.NextFunction) => {
     try {
         const enrollments = await Enrollment.find({})
             .populate('student', 'name studentId')
@@ -16,8 +15,7 @@ export const getAllEnrollments = async (req: Request, res: Response, next: NextF
     }
 };
 
-// Fix: Add express types to function signature
-export const enrollStudent = async (req: Request, res: Response, next: NextFunction) => {
+export const enrollStudent = async (req: express.Request, res: express.Response, next: express.NextFunction) => {
     const { studentId, courseId } = req.body;
     try {
         const openSemester = await Semester.findOne({ status: 'مفتوح' });
@@ -35,8 +33,7 @@ export const enrollStudent = async (req: Request, res: Response, next: NextFunct
     }
 };
 
-// Fix: Add express types to function signature
-export const updateGrade = async (req: Request, res: Response, next: NextFunction) => {
+export const updateGrade = async (req: express.Request, res: express.Response, next: express.NextFunction) => {
     const { studentId, courseId, courseworkGrade, finalGrade } = req.body;
     try {
         const openSemester = await Semester.findOne({ status: 'مفتوح' });
@@ -60,8 +57,7 @@ export const updateGrade = async (req: Request, res: Response, next: NextFunctio
     }
 };
 
-// Fix: Add express types to function signature
-export const unenrollStudent = async (req: Request, res: Response, next: NextFunction) => {
+export const unenrollStudent = async (req: express.Request, res: express.Response, next: express.NextFunction) => {
     const { studentId, courseId } = req.body;
      try {
         const openSemester = await Semester.findOne({ status: 'مفتوح' });

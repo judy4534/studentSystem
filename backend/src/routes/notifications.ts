@@ -1,11 +1,12 @@
+
 import express from 'express';
 import { 
     getAllNotifications, 
     markAsRead, 
     markAllAsRead,
     createReminderNotification
-} from '../controllers/notificationController';
-import { protect, authorize } from '../middleware/auth';
+} from '../controllers/notificationController.js';
+import { protect, authorize } from '../middleware/auth.js';
 
 const router = express.Router();
 

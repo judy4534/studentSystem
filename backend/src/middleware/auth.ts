@@ -1,10 +1,9 @@
-import jwt from 'jsonwebtoken';
-// Fix: Import Request, Response, NextFunction from express
-import { Request, Response, NextFunction } from 'express';
-import User from '../models/User';
 
-// Fix: Add express types to function signature
-export const protect = async (req: Request, res: Response, next: NextFunction) => {
+import jwt from 'jsonwebtoken';
+import express from 'express';
+import User from '../models/User.js';
+
+export const protect = async (req: express.Request, res: express.Response, next: express.NextFunction) => {
     let token;
 
     if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
@@ -30,8 +29,7 @@ export const protect = async (req: Request, res: Response, next: NextFunction) =
 };
 
 export const authorize = (...roles: string[]) => {
-    // Fix: Add express types to function signature
-    return (req: Request, res: Response, next: NextFunction) => {
+    return (req: express.Request, res: express.Response, next: express.NextFunction) => {
         if (!req.user || !roles.includes(req.user.role)) {
             return res.status(403).json({ success: false, message: `User role ${req.user?.role} is not authorized to access this route` });
         }
