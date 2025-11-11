@@ -2,17 +2,17 @@
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 import process from 'process';
-import User from './models/User.js';
-import Course from './models/Course.js';
-import Department from './models/Department.js';
-import Semester from './models/Semester.js';
-import Enrollment from './models/Enrollment.js';
-import ProfessorCourseAssignment from './models/ProfessorCourseAssignment.js';
-import Notification from './models/Notification.js';
-import CourseSubmission from './models/CourseSubmission.js';
-import AuditLog from './models/AuditLog.js';
-import RegistrationRequest from './models/Request.js';
-import connectDB from './config/database.js';
+import User from './models/User';
+import Course from './models/Course';
+import Department from './models/Department';
+import Semester from './models/Semester';
+import Enrollment from './models/Enrollment';
+import ProfessorCourseAssignment from './models/ProfessorCourseAssignment';
+import Notification from './models/Notification';
+import CourseSubmission from './models/CourseSubmission';
+import AuditLog from './models/AuditLog';
+import RegistrationRequest from './models/Request';
+import connectDB from './config/database';
 
 dotenv.config();
 
