@@ -11,11 +11,12 @@ const generateToken = (id: mongoose.Types.ObjectId) => {
         throw new Error('JWT_SECRET is not defined.');
     }
     
-    const expiresIn = process.env.JWT_EXPIRES_IN || '7d';
+const expiresIn = (process.env.JWT_EXPIRES_IN as unknown as SignOptions["expiresIn"]) || "7d";
 
-    const options: SignOptions = {
-        expiresIn,
-    };
+const options: SignOptions = {
+    expiresIn,
+};
+
 
     return jwt.sign({ id }, process.env.JWT_SECRET, options);
 };
