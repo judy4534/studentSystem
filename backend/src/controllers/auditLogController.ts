@@ -1,6 +1,6 @@
 
 import express from 'express';
-import AuditLog from '../models/AuditLog.js';
+import AuditLog from '../models/AuditLog';
 
 export const getAllAuditLogs = async (req: express.Request, res: express.Response, next: express.NextFunction) => {
     try {

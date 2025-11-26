@@ -7,8 +7,8 @@ import {
     updateCourse,
     deleteCourse,
     getCoursesByProfessor,
-} from '../controllers/courseController.js';
-import { protect, authorize } from '../middleware/auth.js';
+} from '../controllers/courseController';
+import { protect, authorize } from '../middleware/auth';
 
 const router = express.Router();
 

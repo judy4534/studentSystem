@@ -5,8 +5,8 @@ import {
     markAsRead, 
     markAllAsRead,
     createReminderNotification
-} from '../controllers/notificationController.js';
-import { protect, authorize } from '../middleware/auth.js';
+} from '../controllers/notificationController';
+import { protect, authorize } from '../middleware/auth';
 
 const router = express.Router();
 

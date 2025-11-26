@@ -5,8 +5,8 @@ import {
     createRequest,
     approveRequest,
     rejectRequest
-} from '../controllers/requestController.js';
-import { protect, authorize } from '../middleware/auth.js';
+} from '../controllers/requestController';
+import { protect, authorize } from '../middleware/auth';
 
 const router = express.Router();
 

@@ -5,8 +5,8 @@ import {
     createSemester,
     updateSemester,
     deleteSemester
-} from '../controllers/semesterController.js';
-import { protect, authorize } from '../middleware/auth.js';
+} from '../controllers/semesterController';
+import { protect, authorize } from '../middleware/auth';
 
 const router = express.Router();
 

@@ -1,7 +1,7 @@
 
 import express from 'express';
-import { getAllSubmissions, createSubmission } from '../controllers/submissionController.js';
-import { protect, authorize } from '../middleware/auth.js';
+import { getAllSubmissions, createSubmission } from '../controllers/submissionController';
+import { protect, authorize } from '../middleware/auth';
 
 const router = express.Router();
 

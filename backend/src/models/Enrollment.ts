@@ -1,3 +1,4 @@
+
 import mongoose from 'mongoose';
 
 const enrollmentSchema = new mongoose.Schema({
@@ -12,8 +13,7 @@ const enrollmentSchema = new mongoose.Schema({
         required: true,
     },
     semester: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Semester',
+        type: mongoose.Schema.Types.Mixed, // Changed to Mixed to allow 'transfer' string or ObjectId
         required: true,
     },
     courseworkGrade: {
@@ -26,7 +26,7 @@ const enrollmentSchema = new mongoose.Schema({
     },
     status: {
         type: String,
-        enum: ['enrolled', 'completed', 'withdrawn'],
+        enum: ['enrolled', 'completed', 'withdrawn', 'transferred'],
         default: 'enrolled',
     },
 }, {

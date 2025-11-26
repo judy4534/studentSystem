@@ -1,3 +1,4 @@
+
 import React, { useState, useMemo } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import AdminLayout from '../../components/layout/AdminLayout';
@@ -10,7 +11,14 @@ type CourseWithDetails = StudentEnrollment & {
     credits: number;
 };
 
-const StatusBadge = ({ courseworkGrade, finalGrade }: { courseworkGrade: number | null, finalGrade: number | null }) => {
+const StatusBadge = ({ courseworkGrade, finalGrade, status }: { courseworkGrade: number | null, finalGrade: number | null, status: string }) => {
+    if (status === 'transferred') {
+        return (
+            <span className="px-2.5 py-1 text-xs font-semibold rounded-full bg-blue-100 text-blue-800">
+                معادلة
+            </span>
+        );
+    }
     if (courseworkGrade === null || finalGrade === null) {
         return (
             <span className="px-2.5 py-1 text-xs font-semibold rounded-full bg-yellow-100 text-yellow-800">
@@ -19,10 +27,10 @@ const StatusBadge = ({ courseworkGrade, finalGrade }: { courseworkGrade: number 
         );
     }
     const totalGrade = courseworkGrade + finalGrade;
-    const status = totalGrade >= 50 ? 'ناجح' : 'راسب';
+    const pass = totalGrade >= 50;
     return (
-        <span className={`px-2.5 py-1 text-xs font-semibold rounded-full ${status === 'ناجح' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}`}>
-            {status}
+        <span className={`px-2.5 py-1 text-xs font-semibold rounded-full ${pass ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}`}>
+            {pass ? 'ناجح' : 'راسب'}
         </span>
     );
 }
@@ -30,8 +38,11 @@ const StatusBadge = ({ courseworkGrade, finalGrade }: { courseworkGrade: number 
 const StudentGradeReport: React.FC = () => {
     const { studentId } = useParams<{ studentId: string }>();
     const navigate = useNavigate();
-    const { users, courses, studentEnrollments, departments } = useData();
+    const { users, courses, studentEnrollments, departments, addTransferredCourse } = useData();
     const [searchTerm, setSearchTerm] = useState('');
+    const [isTransferModalOpen, setIsTransferModalOpen] = useState(false);
+    const [selectedTransferCourse, setSelectedTransferCourse] = useState('');
+    const [transferGrade, setTransferGrade] = useState(0);
 
     const student = useMemo(() => users.find(u => u.id === studentId), [users, studentId]);
 
@@ -53,7 +64,7 @@ const StudentGradeReport: React.FC = () => {
         }), [studentId, studentEnrollments, courses]);
     
     const calculateGPA = (coursesToCalc: CourseWithDetails[]) => {
-        const completedCourses = coursesToCalc.filter(c => c.status === 'completed' && c.courseworkGrade !== null && c.finalGrade !== null);
+        const completedCourses = coursesToCalc.filter(c => (c.status === 'completed' || c.status === 'transferred') && c.courseworkGrade !== null && c.finalGrade !== null);
         if (completedCourses.length === 0) return { gpa: '0.00', points: 0, credits: 0 };
 
         const totalCredits = completedCourses.reduce((sum, c) => sum + c.credits, 0);
@@ -101,8 +112,10 @@ const StudentGradeReport: React.FC = () => {
             semesterMap.set(course.semester, [...semesterCourses, course]);
         });
 
-        const semesterOrder = ['spring', 'fall'];
+        const semesterOrder = ['spring', 'fall', 'transfer'];
         const customSort = (a: string, b: string) => {
+            if (a === 'transfer') return 1;
+            if (b === 'transfer') return -1;
             const [yearA, termA] = a.split('-');
             const [yearB, termB] = b.split('-');
             if (yearA !== yearB) return yearB.localeCompare(yearA);
@@ -115,6 +128,21 @@ const StudentGradeReport: React.FC = () => {
     }, [filteredStudentCourses]);
 
     const overallGPASummary = useMemo(() => calculateGPA(studentCourses), [studentCourses]);
+
+    const handleAddTransfer = () => {
+        if (student && selectedTransferCourse) {
+            addTransferredCourse(student.id, selectedTransferCourse, Number(transferGrade));
+            setIsTransferModalOpen(false);
+            setSelectedTransferCourse('');
+            setTransferGrade(0);
+        }
+    };
+
+    // Filter courses not already taken by student
+    const availableCourses = useMemo(() => {
+        const takenIds = new Set(studentCourses.map(c => c.courseId));
+        return courses.filter(c => !takenIds.has(c.id));
+    }, [courses, studentCourses]);
 
     if (!student) {
         return (
@@ -140,13 +168,22 @@ const StudentGradeReport: React.FC = () => {
                             <p className="text-gray-500">الرقم الجامعي: {student.studentId}</p>
                             <p className="text-gray-500">القسم: {departmentName}</p>
                         </div>
-                        <button
-                            onClick={() => navigate('/admin/users')}
-                            className="bg-gray-200 text-gray-800 px-4 py-2 rounded-lg hover:bg-gray-300 flex items-center gap-2"
-                        >
-                             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
-                            <span>العودة للمستخدمين</span>
-                        </button>
+                        <div className="flex gap-2">
+                             <button
+                                onClick={() => setIsTransferModalOpen(true)}
+                                className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 flex items-center gap-2"
+                            >
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="12" y1="18" x2="12" y2="12"></line><line x1="9" y1="15" x2="15" y2="15"></line></svg>
+                                <span>إضافة مواد معادلة</span>
+                            </button>
+                            <button
+                                onClick={() => navigate('/admin/users')}
+                                className="bg-gray-200 text-gray-800 px-4 py-2 rounded-lg hover:bg-gray-300 flex items-center gap-2"
+                            >
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+                                <span>العودة للمستخدمين</span>
+                            </button>
+                        </div>
                     </div>
                     <div className="mt-6 border-t pt-4">
                         <div className="bg-blue-50 p-4 rounded-lg text-center">
@@ -177,7 +214,7 @@ const StudentGradeReport: React.FC = () => {
                             <div key={semester} className="bg-white p-6 rounded-lg shadow-md">
                                 <div className="bg-gray-50 rounded-md p-4 mb-4">
                                      <div className="flex justify-between items-center">
-                                        <h2 className="text-xl font-bold text-gray-800">{semester.replace('-', ' ')}</h2>
+                                        <h2 className="text-xl font-bold text-gray-800">{semester === 'transfer' ? 'المواد المعادلة (منقولة من جامعة أخرى)' : semester.replace('-', ' ')}</h2>
                                         <div className="text-right">
                                             <span className="text-gray-500 font-semibold">المعدل الفصلي: </span>
                                             <span className="font-bold text-lg text-green-600">{summary.gpa}</span>
@@ -224,7 +261,7 @@ const StudentGradeReport: React.FC = () => {
                                                         <td className="py-4 px-4 font-bold text-center">
                                                             {course.courseworkGrade !== null && course.finalGrade !== null ? totalGrade : '-'}
                                                         </td>
-                                                        <td className="py-4 px-4 text-center"><StatusBadge courseworkGrade={course.courseworkGrade} finalGrade={course.finalGrade} /></td>
+                                                        <td className="py-4 px-4 text-center"><StatusBadge courseworkGrade={course.courseworkGrade} finalGrade={course.finalGrade} status={course.status} /></td>
                                                     </tr>
                                                 );
                                             })}
@@ -240,6 +277,56 @@ const StudentGradeReport: React.FC = () => {
                     </div>
                 )}
             </div>
+
+            {/* Transfer Course Modal */}
+            {isTransferModalOpen && (
+                <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
+                    <div className="bg-white p-6 rounded-lg shadow-xl w-full max-w-md">
+                        <h2 className="text-xl font-bold mb-4">إضافة مادة معادلة</h2>
+                        <div className="space-y-4">
+                            <div>
+                                <label className="block text-sm font-medium text-gray-700 mb-1">اختر المادة المكافئة</label>
+                                <select
+                                    className="w-full p-2 border rounded-md"
+                                    value={selectedTransferCourse}
+                                    onChange={(e) => setSelectedTransferCourse(e.target.value)}
+                                >
+                                    <option value="">-- اختر المادة --</option>
+                                    {availableCourses.map(c => (
+                                        <option key={c.id} value={c.id}>{c.code} - {c.name}</option>
+                                    ))}
+                                </select>
+                            </div>
+                            <div>
+                                <label className="block text-sm font-medium text-gray-700 mb-1">الدرجة المحتسبة (من 100)</label>
+                                <input
+                                    type="number"
+                                    className="w-full p-2 border rounded-md"
+                                    value={transferGrade}
+                                    onChange={(e) => setTransferGrade(Number(e.target.value))}
+                                    min="0"
+                                    max="100"
+                                />
+                            </div>
+                        </div>
+                        <div className="flex justify-end gap-2 mt-6">
+                            <button
+                                onClick={() => setIsTransferModalOpen(false)}
+                                className="px-4 py-2 bg-gray-200 rounded-md text-gray-700 hover:bg-gray-300"
+                            >
+                                إلغاء
+                            </button>
+                            <button
+                                onClick={handleAddTransfer}
+                                disabled={!selectedTransferCourse}
+                                className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 disabled:opacity-50"
+                            >
+                                حفظ
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
         </AdminLayout>
     );
 };

@@ -23,7 +23,7 @@ export interface Course {
 }
 
 export interface StudentCourse extends Course {
-  status: 'enrolled' | 'completed' | 'withdrawn';
+  status: 'enrolled' | 'completed' | 'withdrawn' | 'transferred';
   courseworkGrade?: number;
   finalGrade?: number;
 }
@@ -34,7 +34,7 @@ export interface StudentEnrollment {
     semester: string;
     courseworkGrade: number | null;
     finalGrade: number | null;
-    status: 'enrolled' | 'completed' | 'withdrawn';
+    status: 'enrolled' | 'completed' | 'withdrawn' | 'transferred';
 }
 
 export interface Registration {
@@ -42,7 +42,7 @@ export interface Registration {
   studentId: string;
   courseId: string;
   status: 'pending' | 'approved' | 'rejected';
-  requestType: 'add' | 'drop' | 'override';
+  requestType: 'add' | 'drop' | 'override' | 'review';
   date: string;
 }
 

@@ -1,7 +1,7 @@
 
 import express from 'express';
-import Course from '../models/Course.js';
-import ProfessorCourseAssignment from '../models/ProfessorCourseAssignment.js';
+import Course from '../models/Course';
+import ProfessorCourseAssignment from '../models/ProfessorCourseAssignment';
 
 // @desc    Get all courses
 // @route   GET /api/courses

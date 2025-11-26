@@ -1,6 +1,6 @@
 
 import express from 'express';
-import ProfessorCourseAssignment from '../models/ProfessorCourseAssignment.js';
+import ProfessorCourseAssignment from '../models/ProfessorCourseAssignment';
 
 export const getAllAssignments = async (req: express.Request, res: express.Response, next: express.NextFunction) => {
     try {

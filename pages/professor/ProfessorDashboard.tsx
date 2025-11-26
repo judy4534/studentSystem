@@ -14,12 +14,13 @@ interface Student {
     attended: boolean;
     courseworkGrade: number | null;
     finalGrade: number | null;
+    hasReviewRequest: boolean;
 }
 
 const ProfessorDashboard: React.FC = () => {
     const { courseId } = useParams<{ courseId: string }>();
     const { user } = useAuth();
-    const { users, studentEnrollments, professorCourseAssignments, courses, updateGrade, submitCourseGrades, semesters } = useData();
+    const { users, studentEnrollments, professorCourseAssignments, courses, updateGrade, submitCourseGrades, semesters, registrationRequests } = useData();
     const { addToast } = useToast();
     
     const [students, setStudents] = useState<Student[]>([]);
@@ -60,13 +61,15 @@ const ProfessorDashboard: React.FC = () => {
                     .filter(e => e.courseId === assignment.courseId && e.semester === openSemester.id)
                     .map(enrollment => {
                         const studentUser = users.find(u => u.id === enrollment.studentId);
+                        const hasReview = registrationRequests.some(r => r.courseId === courseId && r.studentId === enrollment.studentId && r.requestType === 'review' && r.status === 'pending');
                         return {
                             id: studentUser?.id || '',
                             studentId: studentUser?.studentId || '',
                             name: studentUser?.name || 'Unknown',
                             attended: true,
                             courseworkGrade: enrollment.courseworkGrade,
-                            finalGrade: enrollment.finalGrade
+                            finalGrade: enrollment.finalGrade,
+                            hasReviewRequest: hasReview
                         }
                     }).filter(s => s.id);
     
@@ -83,7 +86,7 @@ const ProfessorDashboard: React.FC = () => {
             setCourseTitle('لوحة تحكم الأستاذ');
             setStudents([]);
         }
-    }, [user, courseId, studentEnrollments, professorCourseAssignments, courses, users, semesters]);
+    }, [user, courseId, studentEnrollments, professorCourseAssignments, courses, users, semesters, registrationRequests]);
 
 
     const handleAttendanceChange = (id: string) => {
@@ -183,7 +186,18 @@ const ProfessorDashboard: React.FC = () => {
                                 return (
                                 <tr key={student.id} className="border-b last:border-b-0 hover:bg-gray-50">
                                     <td className="py-3 px-4">{student.studentId}</td>
-                                    <td className="py-3 px-4 font-medium">{student.name}</td>
+                                    <td className="py-3 px-4 font-medium flex items-center gap-2">
+                                        {student.name}
+                                        {student.hasReviewRequest && (
+                                            <span 
+                                                className="bg-yellow-100 text-yellow-800 text-xs px-2 py-0.5 rounded-full flex items-center gap-1 cursor-help"
+                                                title="الطالب يطلب مراجعة الدرجة"
+                                            >
+                                                 <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+                                                تظلم
+                                            </span>
+                                        )}
+                                    </td>
                                     <td className="py-3 px-4 text-center">
                                         <input
                                             type="checkbox"

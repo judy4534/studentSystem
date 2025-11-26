@@ -1,6 +1,6 @@
 
 import express from 'express';
-import User from '../models/User.js';
+import User from '../models/User';
 
 // @desc    Get all users
 // @route   GET /api/users

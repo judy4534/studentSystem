@@ -1,8 +1,8 @@
 
 import express from 'express';
-import User from '../models/User.js';
+import User from '../models/User';
 import jwt, { SignOptions } from 'jsonwebtoken';
-import type { IUser } from '../types/models.js';
+import type { IUser } from '../types/models';
 import mongoose from 'mongoose';
 
 const generateToken = (id: mongoose.Types.ObjectId) => {
@@ -11,21 +11,11 @@ const generateToken = (id: mongoose.Types.ObjectId) => {
         throw new Error('JWT_SECRET is not defined.');
     }
     
-const generateToken = (id: mongoose.Types.ObjectId) => {
-    if (!process.env.JWT_SECRET) {
-        console.error('FATAL ERROR: JWT_SECRET is not defined.');
-        throw new Error('JWT_SECRET is not defined.');
-    }
-
-    const expiresIn = (process.env.JWT_EXPIRES_IN as unknown as SignOptions["expiresIn"]) || '7d';
+    const expiresIn = process.env.JWT_EXPIRES_IN || '7d';
 
     const options: SignOptions = {
         expiresIn,
     };
-
-    return jwt.sign({ id }, process.env.JWT_SECRET, options);
-};
-
 
     return jwt.sign({ id }, process.env.JWT_SECRET, options);
 };

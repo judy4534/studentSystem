@@ -1,8 +1,8 @@
 
 import express from 'express';
-import Department from '../models/Department.js';
-import Course from '../models/Course.js';
-import User from '../models/User.js';
+import Department from '../models/Department';
+import Course from '../models/Course';
+import User from '../models/User';
 
 export const getAllDepartments = async (req: express.Request, res: express.Response, next: express.NextFunction) => {
     try {

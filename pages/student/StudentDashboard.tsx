@@ -12,7 +12,7 @@ const ICONS = {
 };
 
 
-const StatusBadge = ({ status }: { status: 'enrolled' | 'completed' | 'withdrawn' }) => {
+const StatusBadge = ({ status }: { status: 'enrolled' | 'completed' | 'withdrawn' | 'transferred' }) => {
     switch(status) {
         case 'enrolled':
             return <span className="px-2.5 py-1 text-xs font-semibold rounded-full bg-yellow-100 text-yellow-800">قيد الرصد</span>;
@@ -20,6 +20,8 @@ const StatusBadge = ({ status }: { status: 'enrolled' | 'completed' | 'withdrawn
             return <span className="px-2.5 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-800">مكتمل</span>;
         case 'withdrawn':
             return <span className="px-2.5 py-1 text-xs font-semibold rounded-full bg-gray-100 text-gray-800">منسحب</span>;
+        case 'transferred':
+            return <span className="px-2.5 py-1 text-xs font-semibold rounded-full bg-blue-100 text-blue-800">معادلة</span>;
         default:
             return null;
     }

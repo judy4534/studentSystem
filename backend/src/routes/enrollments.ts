@@ -4,9 +4,10 @@ import {
     getAllEnrollments,
     enrollStudent,
     unenrollStudent,
-    updateGrade
-} from '../controllers/enrollmentController.js';
-import { protect, authorize } from '../middleware/auth.js';
+    updateGrade,
+    addTransferCredit
+} from '../controllers/enrollmentController';
+import { protect, authorize } from '../middleware/auth';
 
 const router = express.Router();
 
@@ -15,6 +16,7 @@ router.route('/')
     .post(protect, authorize('admin', 'student'), enrollStudent)
     .delete(protect, authorize('admin', 'student'), unenrollStudent);
 
+router.post('/transfer', protect, authorize('admin'), addTransferCredit);
 router.patch('/grade', protect, authorize('admin', 'professor'), updateGrade);
 
 export default router;

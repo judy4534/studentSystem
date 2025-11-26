@@ -1,7 +1,7 @@
 
 import mongoose, { HookNextFunction } from 'mongoose';
 import bcrypt from 'bcryptjs';
-import { IUser } from '../types/models.js';
+import { IUser } from '../types/models';
 
 const userSchema = new mongoose.Schema({
     name: {

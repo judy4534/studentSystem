@@ -1,8 +1,8 @@
 
 import express from 'express';
-import RegistrationRequest from '../models/Request.js';
-import Enrollment from '../models/Enrollment.js';
-import Semester from '../models/Semester.js';
+import RegistrationRequest from '../models/Request';
+import Enrollment from '../models/Enrollment';
+import Semester from '../models/Semester';
 
 export const getAllRequests = async (req: express.Request, res: express.Response, next: express.NextFunction) => {
     try {

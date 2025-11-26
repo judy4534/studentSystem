@@ -1,3 +1,4 @@
+
 import React, { createContext, useContext, useState, useMemo, useCallback, useEffect } from 'react';
 import type { User, Course, Registration, CourseSubmission, Semester, AuditLogEntry, StudentEnrollment, Department, Notification, ProfessorCourseAssignment } from '../types';
 import { useAuth } from '../App';
@@ -65,6 +66,8 @@ interface DataContextType {
     markAllNotificationsAsRead: (userId: string) => Promise<void>;
     sendProfessorReminderNotification: (professorId: string, courseName: string) => Promise<void>;
     createOverrideRequest: (studentId: string, courseId: string) => Promise<void>;
+    createReviewRequest: (studentId: string, courseId: string) => Promise<void>;
+    addTransferredCourse: (studentId: string, courseId: string, finalGrade: number) => Promise<void>;
     addSemester: (semester: Omit<Semester, 'id'>) => Promise<void>;
     updateSemester: (semester: Semester) => Promise<void>;
     deleteSemester: (semesterId: string) => Promise<void>;
@@ -197,7 +200,9 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
             const request = registrationRequests.find(r => r.id === requestId);
             if(request){
                 setRegistrationRequests(prev => prev.map(req => req.id === requestId ? { ...req, status: 'approved' } : req));
-                setStudentEnrollments(prev => [...prev, { studentId: request.studentId, courseId: request.courseId, semester: '2024-fall', courseworkGrade: null, finalGrade: null, status: 'enrolled' }]);
+                if (request.requestType !== 'review') {
+                     setStudentEnrollments(prev => [...prev, { studentId: request.studentId, courseId: request.courseId, semester: '2024-fall', courseworkGrade: null, finalGrade: null, status: 'enrolled' }]);
+                }
                 addToast('Request approved.', 'success');
             }
         };
@@ -409,6 +414,31 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
         });
     }, [handleApiCall, isApiAvailable, addToast]);
 
+    const createReviewRequest = useCallback(async (studentId: string, courseId: string) => {
+         if (!isApiAvailable) {
+            const newRequest: Registration = { studentId, courseId, requestType: 'review', id: `req-review-${Date.now()}`, date: new Date().toISOString().split('T')[0], status: 'pending' };
+            setRegistrationRequests(prev => [...prev, newRequest]);
+            addToast('Review request sent (Offline Mode)', 'info');
+            return;
+        }
+        await handleApiCall(apiFetch<Registration>('/requests', { method: 'POST', body: JSON.stringify({ studentId, courseId, requestType: 'review' }) }), 'Review request sent.', (newRequest) => {
+             setRegistrationRequests(prev => [...prev, newRequest]);
+        });
+    }, [handleApiCall, isApiAvailable, addToast]);
+    
+    const addTransferredCourse = useCallback(async (studentId: string, courseId: string, finalGrade: number) => {
+        if (!isApiAvailable) {
+            // Assume added to a dummy 'transfer-semester' or current
+            const enrollment: StudentEnrollment = { studentId, courseId, semester: 'transfer', courseworkGrade: 0, finalGrade, status: 'transferred' };
+            setStudentEnrollments(prev => [...prev, enrollment]);
+            addToast('Transfer course added (Offline Mode)', 'info');
+            return;
+        }
+        await handleApiCall(apiFetch<StudentEnrollment>('/enrollments/transfer', { method: 'POST', body: JSON.stringify({ studentId, courseId, finalGrade }) }), 'Transfer course added.', (newEnrollment) => {
+             setStudentEnrollments(prev => [...prev, newEnrollment]);
+        });
+    }, [handleApiCall, isApiAvailable, addToast]);
+
     const addSemester = useCallback(async (data: Omit<Semester, 'id'>) => {
          if (!isApiAvailable) {
             const newSemester = { ...data, id: `sem-local-${Date.now()}` };
@@ -450,7 +480,8 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
         updateDepartment, deleteCourse, deleteUser, addUser, updateUser, addCourse,
         updateCourse, enrollStudentInCourse, unenrollStudentFromCourse, assignProfessorToCourse,
         submitCourseGrades, markNotificationAsRead, markAllNotificationsAsRead,
-        sendProfessorReminderNotification, createOverrideRequest, addSemester, updateSemester,
+        sendProfessorReminderNotification, createOverrideRequest, createReviewRequest, 
+        addTransferredCourse, addSemester, updateSemester,
         deleteSemester,
     }), [
         users, courses, departments, registrationRequests, studentEnrollments,
@@ -460,7 +491,8 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
         updateDepartment, deleteCourse, deleteUser, addUser, updateUser, addCourse,
         updateCourse, enrollStudentInCourse, unenrollStudentFromCourse, assignProfessorToCourse,
         submitCourseGrades, markNotificationAsRead, markAllNotificationsAsRead,
-        sendProfessorReminderNotification, createOverrideRequest, addSemester, updateSemester,
+        sendProfessorReminderNotification, createOverrideRequest, createReviewRequest,
+        addTransferredCourse, addSemester, updateSemester,
         deleteSemester,
     ]);
 

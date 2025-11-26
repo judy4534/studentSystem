@@ -5,25 +5,25 @@ import cors from 'cors';
 import helmet from 'helmet';
 import morgan from 'morgan';
 import path from 'path';
-// FIX: Import `fileURLToPath` to define `__dirname` in an ES module context.
+import connectDB from './config/database';
+import errorHandler from './middleware/errorHandler';
 import { fileURLToPath } from 'url';
-import connectDB from './config/database.js';
-import errorHandler from './middleware/errorHandler.js';
 
 // Import routes
-import authRoutes from './routes/auth.js';
-import userRoutes from './routes/users.js';
-import courseRoutes from './routes/courses.js';
-import departmentRoutes from './routes/departments.js';
-import semesterRoutes from './routes/semesters.js';
-import enrollmentRoutes from './routes/enrollments.js';
-import requestRoutes from './routes/requests.js';
-import assignmentRoutes from './routes/assignments.js';
-import notificationRoutes from './routes/notifications.js';
-import submissionRoutes from './routes/submissions.js';
-import auditLogRoutes from './routes/auditLogs.js';
+import authRoutes from './routes/auth';
+import userRoutes from './routes/users';
+import courseRoutes from './routes/courses';
+import departmentRoutes from './routes/departments';
+import semesterRoutes from './routes/semesters';
+import enrollmentRoutes from './routes/enrollments';
+import requestRoutes from './routes/requests';
+import assignmentRoutes from './routes/assignments';
+import notificationRoutes from './routes/notifications';
+import submissionRoutes from './routes/submissions';
+import auditLogRoutes from './routes/auditLogs';
 
-// FIX: Define `__filename` and `__dirname` for ES modules, as they are not available globally.
+
+// FIX: Resolve __dirname for ES modules, as it's not globally available.
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 

@@ -1,3 +1,4 @@
+
 import mongoose from 'mongoose';
 
 const requestSchema = new mongoose.Schema({
@@ -18,7 +19,7 @@ const requestSchema = new mongoose.Schema({
     },
     requestType: {
         type: String,
-        enum: ['add', 'drop', 'override'],
+        enum: ['add', 'drop', 'override', 'review'],
         required: true,
     },
 }, {

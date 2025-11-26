@@ -1,6 +1,6 @@
 
 import express from 'express';
-import Semester from '../models/Semester.js';
+import Semester from '../models/Semester';
 
 export const getAllSemesters = async (req: express.Request, res: express.Response, next: express.NextFunction) => {
     try {
