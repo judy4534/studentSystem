@@ -1,5 +1,5 @@
 
-import mongoose, { HookNextFunction } from 'mongoose';
+import mongoose from 'mongoose';
 import bcrypt from 'bcryptjs';
 import { IUser } from '../types/models';
 
@@ -43,7 +43,7 @@ const userSchema = new mongoose.Schema({
 
 // Password hashing middleware
 // FIX: Use the generic form of `.pre<IUser>()` to correctly type `this` and allow access to Mongoose document methods like `isModified`.
-userSchema.pre<IUser>('save', async function (next: HookNextFunction) {
+userSchema.pre<IUser>('save', async function (next) {
     if (!this.isModified('password')) {
         return next();
     }
