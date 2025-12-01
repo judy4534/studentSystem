@@ -1,6 +1,8 @@
 import mongoose from 'mongoose';
+import { IProfessorCourseAssignment } from '../types/models';
+import { createDefaultSchemaOptions } from './schemaOptions';
 
-const professorCourseAssignmentSchema = new mongoose.Schema({
+const professorCourseAssignmentSchema = new mongoose.Schema<IProfessorCourseAssignment>({
     professor: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
@@ -11,9 +13,7 @@ const professorCourseAssignmentSchema = new mongoose.Schema({
         ref: 'Course',
         required: true,
     },
-}, {
-    timestamps: true,
-});
+}, createDefaultSchemaOptions<IProfessorCourseAssignment>());
 
 professorCourseAssignmentSchema.index({ professor: 1, course: 1 }, { unique: true });
 
