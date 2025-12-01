@@ -104,11 +104,9 @@ This will create:
 This project is configured to be deployed as a single **Web Service** on Render, where the Node.js backend serves both the API and the built React frontend. You can use the included `render.yaml` Blueprint for a one-click setup, or configure the service manually.
 
 ### 1. Database Setup
-Before deploying, you need a live MongoDB database. A free tier on **[MongoDB Atlas](https://www.mongodb.com/cloud/atlas)** is highly recommended.
-- Create an account and a new cluster.
-- In "Network Access", add `0.0.0.0/0` to allow connections from anywhere (Render's IP addresses can change).
-- Create a database user and save the username and password.
-- Get the connection string for your application and replace `<password>` with your user's password.
+Before deploying, you need a live MongoDB database. You can use **[MongoDB Atlas](https://www.mongodb.com/cloud/atlas)** or any other MongoDB host that Render can reach.
+- Atlas: create a cluster, allow connections from Render (e.g., `0.0.0.0/0`), create a database user, and copy the connection string.
+- Self-hosted/other providers: use a VPS or managed MongoDB with a public hostname/IP and open firewall rules. Render cannot connect to a MongoDB instance that only runs on `localhost` of your desktop.
 
 ### 2. Render Web Service Configuration
 1.  From your Render dashboard, click **New** -> **Web Service**.
@@ -125,7 +123,7 @@ Before deploying, you need a live MongoDB database. A free tier on **[MongoDB At
 ### 3. Environment Variables
 Click on the **Environment** tab and add the following variables.
 -   **`NODE_ENV`**: `production`
--   **`MONGODB_URI`**: The connection string from MongoDB Atlas.
+-   **`MONGODB_URI`**: The connection string for your database (Atlas or any reachable MongoDB host, e.g., `mongodb://user:pass@host:27017/db`).
 -   **`JWT_SECRET`**: A long, random, and secret string for signing tokens (you can generate one with `openssl rand -base64 32`).
 -   **`FRONTEND_URL`**: The URL of your Render service once it's live (it will look like `https://your-service-name.onrender.com`).
 

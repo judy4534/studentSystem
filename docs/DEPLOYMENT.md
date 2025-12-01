@@ -4,7 +4,7 @@ This guide walks through deploying the Student System so that the backend and bu
 
 ## Prerequisites
 - Node.js 20+
-- MongoDB database (cloud-hosted MongoDB Atlas or self-hosted instance)
+- MongoDB database (cloud-hosted MongoDB Atlas **or any self-hosted instance** that is reachable from your server)
 - Environment variables configured (see `.env.example`)
 
 ## Production build and start locally
@@ -31,10 +31,9 @@ This guide walks through deploying the Student System so that the backend and bu
 You can deploy either through Render's UI or by using the included `render.yaml` Blueprint.
 
 ### Option A: Deploy with `render.yaml`
-1. **Prepare MongoDB Atlas**
-   - Create a new cluster.
-   - In **Network Access**, allow access from everywhere (`0.0.0.0/0`).
-   - Create a database user and obtain the connection string.
+1. **Prepare your database (Atlas or self-hosted)**
+   - If using MongoDB Atlas, create a cluster, allow access from Render (e.g., `0.0.0.0/0`), and create a database user to get the connection string.
+   - If using your own MongoDB server (VPS, managed MongoDB, Docker on a cloud VM), ensure the instance is reachable from Render with a public hostname/IP and proper firewall rules. Render cannot connect to a database running only on `localhost` of your desktop.
 2. **Deploy via Blueprint**
    - From the Render dashboard, choose **New → Blueprint** and connect this repository.
    - Render will read `render.yaml` and prefill all settings:
@@ -45,7 +44,7 @@ You can deploy either through Render's UI or by using the included `render.yaml`
    - Click **Apply** to create the service.
 3. **Environment variables**
    - Render will prompt you to fill in the secrets defined in `render.yaml`:
-     - `MONGODB_URI=<your MongoDB Atlas connection string>`
+     - `MONGODB_URI=<your MongoDB connection string>` (Atlas or your own host, e.g., `mongodb://user:pass@host:27017/db`)
      - `JWT_SECRET=<a strong secret string>`
      - `FRONTEND_URL=https://your-service-name.onrender.com`
      - Optional: `JWT_EXPIRES_IN`, `RATE_LIMIT_WINDOW_MS`, `RATE_LIMIT_MAX_REQUESTS`
@@ -53,10 +52,9 @@ You can deploy either through Render's UI or by using the included `render.yaml`
    - After the first deploy completes, open the Render URL to access the frontend and use `/api` routes for the backend.
 
 ### Option B: Deploy via Render UI (manual setup)
-1. **Prepare MongoDB Atlas**
-   - Create a new cluster.
-   - In **Network Access**, allow access from everywhere (`0.0.0.0/0`).
-   - Create a database user and obtain the connection string.
+1. **Prepare your database (Atlas or self-hosted)**
+   - If using MongoDB Atlas, create a cluster and allow access from Render.
+   - If using your own MongoDB server, make sure it is accessible from Render with the correct firewall rules and credentials. Services on your personal laptop are not reachable by Render unless you expose them publicly.
 2. **Create the Render service**
    - From the Render dashboard, choose **New → Web Service** and connect this repository.
    - Settings:
@@ -69,7 +67,7 @@ You can deploy either through Render's UI or by using the included `render.yaml`
 3. **Environment variables**
    - Add the variables from `.env.example`:
      - `NODE_ENV=production`
-     - `MONGODB_URI=<your MongoDB Atlas connection string>`
+     - `MONGODB_URI=<your MongoDB connection string>` (Atlas or self-hosted)
      - `JWT_SECRET=<a strong secret string>`
      - `FRONTEND_URL=https://your-service-name.onrender.com`
      - `JWT_EXPIRES_IN`, `RATE_LIMIT_WINDOW_MS`, `RATE_LIMIT_MAX_REQUESTS` as needed
@@ -79,6 +77,6 @@ You can deploy either through Render's UI or by using the included `render.yaml`
 
 ## Troubleshooting
 - **Build fails on Render**: Confirm Node 20 is selected, and that your build command matches `npm run build`.
-- **API cannot reach MongoDB**: Ensure your Atlas IP access list allows Render and that `MONGODB_URI` uses the correct credentials.
+- **API cannot reach MongoDB**: Ensure your database accepts connections from Render (update Atlas IP allowlist or your server firewall rules) and that `MONGODB_URI` uses the correct credentials.
 - **CORS errors**: Verify `FRONTEND_URL` matches the deployed URL.
 - **JWT errors**: Use a long, random `JWT_SECRET` and ensure `JWT_EXPIRES_IN` is set (default `7d`).
