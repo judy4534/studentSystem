@@ -1,6 +1,7 @@
 import mongoose from 'mongoose';
 import bcrypt from 'bcryptjs';
 import { IUser } from '../types/models';
+import { createDefaultSchemaOptions } from './schemaOptions';
 
 const userSchema = new mongoose.Schema<IUser>({
     name: {
@@ -36,9 +37,7 @@ const userSchema = new mongoose.Schema<IUser>({
         enum: ['نشط', 'غير نشط'],
         default: 'نشط',
     },
-}, {
-    timestamps: true,
-});
+}, createDefaultSchemaOptions<IUser>());
 
 // ✔ FIX 1: حذف HookNextFunction نهائيًا (مو موجود في Mongoose v7)
 userSchema.pre('save', async function (this: IUser, next) {

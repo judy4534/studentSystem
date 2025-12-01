@@ -1,6 +1,8 @@
 import mongoose from 'mongoose';
+import { ISemester } from '../types/models';
+import { createDefaultSchemaOptions } from './schemaOptions';
 
-const semesterSchema = new mongoose.Schema({
+const semesterSchema = new mongoose.Schema<ISemester>({
     name: {
         type: String,
         required: true,
@@ -23,9 +25,7 @@ const semesterSchema = new mongoose.Schema({
         type: Date,
         required: true,
     },
-}, {
-    timestamps: true,
-});
+}, createDefaultSchemaOptions<ISemester>());
 
 const Semester = mongoose.model('Semester', semesterSchema);
 export default Semester;
