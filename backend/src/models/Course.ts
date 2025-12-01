@@ -1,6 +1,8 @@
 import mongoose from 'mongoose';
+import { ICourse } from '../types/models';
+import { createDefaultSchemaOptions } from './schemaOptions';
 
-const courseSchema = new mongoose.Schema({
+const courseSchema = new mongoose.Schema<ICourse>({
     code: {
         type: String,
         required: true,
@@ -26,9 +28,7 @@ const courseSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
-}, {
-    timestamps: true,
-});
+}, createDefaultSchemaOptions<ICourse>());
 
 const Course = mongoose.model('Course', courseSchema);
 export default Course;
