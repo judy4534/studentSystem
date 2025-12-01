@@ -1,6 +1,8 @@
 import mongoose from 'mongoose';
+import { IDepartment } from '../types/models';
+import { createDefaultSchemaOptions } from './schemaOptions';
 
-const departmentSchema = new mongoose.Schema({
+const departmentSchema = new mongoose.Schema<IDepartment>({
     name: {
         type: String,
         required: true,
@@ -11,9 +13,7 @@ const departmentSchema = new mongoose.Schema({
         required: true,
     },
     // courseCount and studentCount will be calculated dynamically if needed
-}, {
-    timestamps: true,
-});
+}, createDefaultSchemaOptions<IDepartment>());
 
 const Department = mongoose.model('Department', departmentSchema);
 export default Department;
