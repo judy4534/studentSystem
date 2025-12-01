@@ -1,6 +1,8 @@
 import mongoose from 'mongoose';
+import { ICourseSubmission } from '../types/models';
+import { createDefaultSchemaOptions } from './schemaOptions';
 
-const courseSubmissionSchema = new mongoose.Schema({
+const courseSubmissionSchema = new mongoose.Schema<ICourseSubmission>({
     course: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Course',
@@ -20,9 +22,7 @@ const courseSubmissionSchema = new mongoose.Schema({
         type: Date,
         default: Date.now,
     },
-}, {
-    timestamps: true,
-});
+}, createDefaultSchemaOptions<ICourseSubmission>());
 
 courseSubmissionSchema.index({ course: 1, semester: 1 }, { unique: true });
 

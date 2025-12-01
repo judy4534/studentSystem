@@ -1,7 +1,9 @@
 
 import mongoose from 'mongoose';
+import { IEnrollment } from '../types/models';
+import { createDefaultSchemaOptions } from './schemaOptions';
 
-const enrollmentSchema = new mongoose.Schema({
+const enrollmentSchema = new mongoose.Schema<IEnrollment>({
     student: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
@@ -29,9 +31,7 @@ const enrollmentSchema = new mongoose.Schema({
         enum: ['enrolled', 'completed', 'withdrawn', 'transferred'],
         default: 'enrolled',
     },
-}, {
-    timestamps: true,
-});
+}, createDefaultSchemaOptions<IEnrollment>());
 
 enrollmentSchema.index({ student: 1, course: 1, semester: 1 }, { unique: true });
 
