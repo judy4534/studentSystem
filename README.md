@@ -40,7 +40,7 @@ Backend API for the Student Management System built with Node.js, Express, TypeS
 1. Clone the repository:
 ```bash
 git clone <repository-url>
-cd university-course-registration-system
+cd studentSystem
 ```
 
 2. Install dependencies from the root directory:
@@ -48,26 +48,12 @@ cd university-course-registration-system
 npm install
 ```
 
-3. Create a `.env` file in the root directory with the following content:
-```env
-# Server Configuration
-PORT=5000
-NODE_ENV=development
-
-# Database Configuration
-MONGODB_URI=mongodb://localhost:27017/student-system
-
-# JWT Configuration
-JWT_SECRET=your-super-secret-jwt-key-change-this-in-production
-JWT_EXPIRES_IN=7d
-
-# CORS Configuration
-FRONTEND_URL=http://localhost:5173
-
-# Rate Limiting
-RATE_LIMIT_WINDOW_MS=900000
-RATE_LIMIT_MAX_REQUESTS=100
+3. Create a `.env` file in the root directory. You can copy and adjust the provided template:
+```bash
+cp .env.example .env
 ```
+
+Fill in the values to match your environment (MongoDB URI, JWT secret, and frontend URL).
 
 ## Running the Application
 
@@ -91,6 +77,8 @@ npm run build
 npm start
 ```
 
+For detailed deployment instructions (including Render), see [Deployment Guide](docs/DEPLOYMENT.md).
+
 ## Database Seeding
 
 To populate the database with initial data, run the following command from the root directory. Make sure your MongoDB server is running.
@@ -113,7 +101,7 @@ This will create:
 
 ## Deployment on Render
 
-This project is configured to be deployed as a single **Web Service** on Render, where the Node.js backend serves both the API and the built React frontend.
+This project is configured to be deployed as a single **Web Service** on Render, where the Node.js backend serves both the API and the built React frontend. You can use the included `render.yaml` Blueprint for a one-click setup, or configure the service manually.
 
 ### 1. Database Setup
 Before deploying, you need a live MongoDB database. A free tier on **[MongoDB Atlas](https://www.mongodb.com/cloud/atlas)** is highly recommended.
@@ -129,8 +117,9 @@ Before deploying, you need a live MongoDB database. A free tier on **[MongoDB At
     -   **Name**: A name for your service (e.g., `university-system`).
     -   **Root Directory**: Leave this blank to use the repository root.
     -   **Environment**: `Node`.
-    -   **Build Command**: `npm install && npm run build`
+    -   **Build Command**: `npm install --include=dev && npm run build` (ensures TypeScript and `@types/*` packages are present)
     -   **Start Command**: `npm start`
+    -   **Health Check Path**: `/health`
     -   **Instance Type**: The `Free` tier is suitable for development and testing.
 
 ### 3. Environment Variables

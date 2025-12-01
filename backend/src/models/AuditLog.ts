@@ -1,6 +1,8 @@
 import mongoose from 'mongoose';
+import { IAuditLog } from '../types/models';
+import { createDefaultSchemaOptions } from './schemaOptions';
 
-const auditLogSchema = new mongoose.Schema({
+const auditLogSchema = new mongoose.Schema<IAuditLog>({
     user: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
@@ -10,9 +12,7 @@ const auditLogSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
-}, {
-    timestamps: true,
-});
+}, createDefaultSchemaOptions<IAuditLog>());
 
 const AuditLog = mongoose.model('AuditLog', auditLogSchema);
 export default AuditLog;

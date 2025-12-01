@@ -1,6 +1,8 @@
 import mongoose from 'mongoose';
+import { INotification } from '../types/models';
+import { createDefaultSchemaOptions } from './schemaOptions';
 
-const notificationSchema = new mongoose.Schema({
+const notificationSchema = new mongoose.Schema<INotification>({
     user: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
@@ -18,9 +20,7 @@ const notificationSchema = new mongoose.Schema({
         type: Boolean,
         default: false,
     },
-}, {
-    timestamps: true,
-});
+}, createDefaultSchemaOptions<INotification>());
 
 const Notification = mongoose.model('Notification', notificationSchema);
 export default Notification;
