@@ -3,11 +3,12 @@
   "version": "1.0.0",
   "description": "Backend API for the Student Management System",
   "main": "dist/index.js",
+  "type": "module",
   "scripts": {
     "start": "node dist/index.js",
-    "dev": "nodemon src/index.ts",
+    "dev": "nodemon --watch src --exec \"ts-node --esm src/index.ts\"",
     "build": "tsc",
-    "seed": "ts-node src/seed.ts"
+    "seed": "ts-node --esm src/seed.ts"
   },
   "keywords": [],
   "author": "",
