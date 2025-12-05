@@ -4,10 +4,10 @@
   "scripts": {
     "start": "node backend/dist/index.js",
     "dev": "vite",
-    "dev:backend": "nodemon backend/src/index.ts",
+    "dev:backend": "nodemon --watch backend/src --exec \"ts-node --esm backend/src/index.ts\"",
     "build": "tsc -p backend/tsconfig.json && vite build",
     "preview": "vite preview",
-    "seed": "ts-node backend/src/seed.ts"
+    "seed": "ts-node --esm backend/src/seed.ts"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
