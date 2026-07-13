@@ -9,12 +9,110 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Tajwal:wght@400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
     <script>
       tailwind.config = {
         theme: {
           extend: {
             fontFamily: {
-              sans: ['Tajwal', 'Cairo', 'sans-serif'],
+              sans: ['Plus Jakarta Sans', 'Tajwal', 'Cairo', 'sans-serif'],
+              serif: ['Playfair Display', 'serif'],
+              display: ['Playfair Display', 'serif'],
+              body: ['Plus Jakarta Sans', 'Tajwal', 'Cairo', 'sans-serif'],
+            },
+            colors: {
+              // Surface Colors
+              surface: '#fff9e7',
+              'surface-dim': '#e2dbb4',
+              'surface-bright': '#fff9e7',
+              'surface-container-lowest': '#ffffff',
+              'surface-container-low': '#fcf4cc',
+              'surface-container': '#f6efc7',
+              'surface-container-high': '#f0e9c2',
+              'surface-container-highest': '#eae3bc',
+              'on-surface': '#1f1c04',
+              'on-surface-variant': '#47473f',
+              'inverse-surface': '#343116',
+              'inverse-on-surface': '#f9f2ca',
+              outline: '#78776e',
+              'outline-variant': '#c8c7bc',
+              'surface-tint': '#5e604d',
+              
+              // Primary Colors
+              primary: '#5e604d',
+              'on-primary': '#ffffff',
+              'primary-container': '#f5f5dc',
+              'on-primary-container': '#6f705c',
+              'inverse-primary': '#c8c8b0',
+              'primary-fixed': '#e4e4cc',
+              'primary-fixed-dim': '#c8c8b0',
+              'on-primary-fixed': '#1b1d0e',
+              'on-primary-fixed-variant': '#474836',
+              
+              // Secondary Colors (Deep Gold)
+              secondary: '#735c00',
+              'on-secondary': '#ffffff',
+              'secondary-container': '#fed65b',
+              'on-secondary-container': '#745c00',
+              'secondary-fixed': '#ffe088',
+              'secondary-fixed-dim': '#e9c349',
+              'on-secondary-fixed': '#241a00',
+              'on-secondary-fixed-variant': '#574500',
+              
+              // Tertiary Colors (Soft Rose & Sage Green)
+              tertiary: '#79545c',
+              'on-tertiary': '#ffffff',
+              'tertiary-container': '#fff0f1',
+              'on-tertiary-container': '#8b656d',
+              'tertiary-fixed': '#ffd9e0',
+              'tertiary-fixed-dim': '#e9bbc4',
+              'on-tertiary-fixed': '#2e131a',
+              'on-tertiary-fixed-variant': '#5f3d45',
+              
+              // Error Colors
+              error: '#ba1a1a',
+              'on-error': '#ffffff',
+              'error-container': '#ffdad6',
+              'on-error-container': '#93000a',
+              
+              // Background
+              background: '#fff9e7',
+              'on-background': '#1f1c04',
+              'surface-variant': '#eae3bc',
+            },
+            fontSize: {
+              'display-lg': ['48px', { lineHeight: '1.1', letterSpacing: '-0.02em', fontWeight: '700' }],
+              'display-lg-mobile': ['36px', { lineHeight: '1.2', fontWeight: '700' }],
+              'headline-md': ['32px', { lineHeight: '1.3', fontWeight: '600' }],
+              'headline-sm': ['24px', { lineHeight: '1.4', fontWeight: '600' }],
+              'body-lg': ['18px', { lineHeight: '1.6', fontWeight: '400' }],
+              'body-md': ['16px', { lineHeight: '1.6', fontWeight: '400' }],
+              'label-caps': ['12px', { lineHeight: '1', letterSpacing: '0.1em', fontWeight: '600' }],
+            },
+            borderRadius: {
+              'sm': '0.125rem',
+              'DEFAULT': '0.25rem',
+              'md': '0.375rem',
+              'lg': '0.5rem',
+              'xl': '0.75rem',
+              'full': '9999px',
+            },
+            spacing: {
+              'unit': '8px',
+              'gutter': '24px',
+              'margin-mobile': '20px',
+              'margin-desktop': '64px',
+              'section-gap': '80px',
+            },
+            maxWidth: {
+              'container': '1200px',
+            },
+            boxShadow: {
+              'gold': '0 0 30px rgba(212, 175, 55, 0.1)',
+              'sage': '0 0 30px rgba(178, 172, 136, 0.1)',
+              'inset-sm': 'inset 0 2px 4px rgba(0, 0, 0, 0.05)',
+              'inset-md': 'inset 0 2px 8px rgba(0, 0, 0, 0.1)',
             },
           },
         },
@@ -22,8 +120,179 @@
     </script>
     <style>
       body {
-        font-family: 'Tajwal', 'Cairo', 'sans-serif';
+        font-family: 'Plus Jakarta Sans', 'Tajwal', 'Cairo', 'sans-serif';
+        background-color: #fff9e7;
+        color: #1f1c04;
       }
+      
+      h1, h2, h3, h4, h5, h6 {
+        font-family: 'Playfair Display', serif;
+      }
+      
+      .display-lg {
+        font-family: 'Playfair Display', serif;
+        font-size: 48px;
+        font-weight: 700;
+        line-height: 1.1;
+        letter-spacing: -0.02em;
+      }
+      
+      .display-lg-mobile {
+        font-family: 'Playfair Display', serif;
+        font-size: 36px;
+        font-weight: 700;
+        line-height: 1.2;
+      }
+      
+      .headline-md {
+        font-family: 'Playfair Display', serif;
+        font-size: 32px;
+        font-weight: 600;
+        line-height: 1.3;
+      }
+      
+      .headline-sm {
+        font-family: 'Playfair Display', serif;
+        font-size: 24px;
+        font-weight: 600;
+        line-height: 1.4;
+      }
+      
+      .body-lg {
+        font-family: 'Plus Jakarta Sans', sans-serif;
+        font-size: 18px;
+        font-weight: 400;
+        line-height: 1.6;
+      }
+      
+      .body-md {
+        font-family: 'Plus Jakarta Sans', sans-serif;
+        font-size: 16px;
+        font-weight: 400;
+        line-height: 1.6;
+      }
+      
+      .label-caps {
+        font-family: 'Plus Jakarta Sans', sans-serif;
+        font-size: 12px;
+        font-weight: 600;
+        line-height: 1;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+      }
+      
+      /* Button Styles */
+      .btn-primary {
+        background-color: #f5f5dc;
+        color: #735c00;
+        border: 1.5px solid #735c00;
+        padding: 12px 16px;
+        border-radius: 4px;
+        font-family: 'Plus Jakarta Sans', sans-serif;
+        font-size: 12px;
+        font-weight: 600;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        cursor: pointer;
+        transition: all 0.3s ease;
+      }
+      
+      .btn-primary:hover {
+        border-width: 2px;
+        box-shadow: 0 0 30px rgba(212, 175, 55, 0.1);
+      }
+      
+      .btn-secondary {
+        background-color: #735c00;
+        color: #f5f5dc;
+        border: none;
+        padding: 12px 16px;
+        border-radius: 4px;
+        font-family: 'Plus Jakarta Sans', sans-serif;
+        font-size: 12px;
+        font-weight: 600;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        cursor: pointer;
+        transition: all 0.3s ease;
+      }
+      
+      .btn-secondary:hover {
+        opacity: 0.9;
+        box-shadow: 0 0 30px rgba(212, 175, 55, 0.1);
+      }
+      
+      /* Card Styles */
+      .card {
+        background-color: #f5f5dc;
+        border: 1px solid #735c00;
+        border-radius: 8px;
+        padding: 16px;
+        box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05);
+        transition: all 0.3s ease;
+      }
+      
+      .card:hover {
+        box-shadow: 0 0 30px rgba(212, 175, 55, 0.1);
+      }
+      
+      /* Input Styles */
+      .input-field {
+        background-color: transparent;
+        border: none;
+        border-bottom: 1px solid #735c00;
+        padding: 8px 0;
+        font-family: 'Plus Jakarta Sans', sans-serif;
+        font-size: 16px;
+        color: #1f1c04;
+        transition: all 0.3s ease;
+      }
+      
+      .input-field:focus {
+        outline: none;
+        border-bottom-width: 2px;
+        box-shadow: 0 2px 0 #735c00;
+      }
+      
+      .input-field::placeholder {
+        color: #47473f;
+      }
+      
+      /* Navigation Header */
+      .nav-header {
+        border-bottom: 1px solid #735c00;
+        padding: 16px 0;
+        text-align: center;
+      }
+      
+      .nav-logo {
+        font-family: 'Playfair Display', serif;
+        font-size: 32px;
+        color: #5e604d;
+      }
+      
+      /* Chip Styles */
+      .chip {
+        display: inline-block;
+        padding: 8px 12px;
+        border-radius: 9999px;
+        font-family: 'Plus Jakarta Sans', sans-serif;
+        font-size: 12px;
+        font-weight: 600;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+      }
+      
+      .chip-rose {
+        background-color: rgba(226, 180, 189, 0.5);
+        color: #1f1c04;
+      }
+      
+      .chip-sage {
+        background-color: rgba(178, 172, 136, 0.5);
+        color: #1f1c04;
+      }
+      
       @keyframes toast-in {
         from {
           transform: translateY(-100%);
@@ -36,6 +305,25 @@
       }
       .animate-toast-in {
         animation: toast-in 0.5s ease-out forwards;
+      }
+      
+      @media (max-width: 768px) {
+        .display-lg {
+          font-size: 36px;
+          line-height: 1.2;
+        }
+        
+        .headline-md {
+          font-size: 24px;
+        }
+        
+        .headline-sm {
+          font-size: 20px;
+        }
+        
+        .body-lg {
+          font-size: 16px;
+        }
       }
     </style>
   <script type="importmap">
@@ -63,7 +351,7 @@
 }
 </script>
 </head>
-  <body class="bg-gray-100">
+  <body class="bg-surface text-on-surface">
     <div id="root"></div>
     <script type="module" src="/index.tsx"></script>
   </body>

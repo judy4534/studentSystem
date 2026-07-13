@@ -145,9 +145,9 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => 
   
   if (loading) {
     return (
-        <div className="flex items-center justify-center h-screen bg-gray-100">
+        <div className="flex items-center justify-center h-screen bg-surface">
             <div className="text-center">
-                <p className="text-xl font-semibold">Loading Application...</p>
+                <p className="text-xl font-semibold text-on-surface">Loading Application...</p>
             </div>
         </div>
     );
@@ -174,10 +174,10 @@ const MainApp: React.FC = () => {
 
   if (dataLoading && user) {
     return (
-        <div className="flex items-center justify-center h-screen bg-gray-100">
+        <div className="flex items-center justify-center h-screen bg-surface">
             <div className="text-center">
-                <p className="text-xl font-semibold">Loading University Data...</p>
-                <p className="text-gray-500">Please wait a moment.</p>
+                <p className="text-xl font-semibold text-on-surface">Loading University Data...</p>
+                <p className="text-on-surface-variant">Please wait a moment.</p>
             </div>
         </div>
     );

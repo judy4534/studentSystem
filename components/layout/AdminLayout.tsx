@@ -54,12 +54,12 @@ const AdminLayout: React.FC<{ children: React.ReactNode; title: string; }> = ({ 
     };
     
     return (
-      <div className="flex h-screen bg-gray-100 text-gray-800" dir="rtl">
-        <aside className="w-64 flex-shrink-0 bg-white border-l border-gray-200 flex flex-col">
-          <div className="h-20 flex items-center justify-center px-4 border-b">
+      <div className="flex h-screen bg-surface text-on-surface" dir="rtl">
+        <aside className="w-64 flex-shrink-0 bg-primary-container border-l border-secondary flex flex-col">
+          <div className="h-20 flex items-center justify-center px-4 border-b border-secondary">
               <div className="flex items-center gap-3">
                   <LogoIcon className="h-10 w-10"/>
-                  <span className="text-xl font-bold text-gray-800">لوحة تحكم المسؤول</span>
+                  <span className="text-xl font-bold text-primary font-serif">لوحة تحكم المسؤول</span>
               </div>
           </div>
           <nav className="flex-grow px-4 py-4">
@@ -71,8 +71,8 @@ const AdminLayout: React.FC<{ children: React.ReactNode; title: string; }> = ({ 
                   <li key={link.id}>
                     <div
                       onClick={() => handleMenuToggle(link.id!)}
-                      className={`flex items-center justify-between w-full gap-4 px-4 py-3 my-2 rounded-lg transition-colors text-gray-600 font-semibold cursor-pointer ${
-                        isParentActive ? 'bg-blue-50 text-blue-700' : 'hover:bg-gray-100'
+                      className={`flex items-center justify-between w-full gap-4 px-4 py-3 my-2 rounded-lg transition-colors font-semibold cursor-pointer ${
+                        isParentActive ? 'bg-surface-container text-secondary border-l-2 border-secondary' : 'text-on-surface-variant hover:bg-surface-container-low'
                       }`}
                     >
                       <div className="flex items-center gap-4">
@@ -90,8 +90,8 @@ const AdminLayout: React.FC<{ children: React.ReactNode; title: string; }> = ({ 
                              <NavLink
                                to={child.to}
                                className={({ isActive }) =>
-                                 `flex items-center gap-3 px-4 py-2 my-1 rounded-lg transition-colors text-gray-500 font-medium text-sm ${
-                                   isActive ? 'bg-blue-100 text-blue-700 font-semibold' : 'hover:bg-gray-100'
+                                 `flex items-center gap-3 px-4 py-2 my-1 rounded-lg transition-colors text-on-surface-variant font-medium text-sm ${
+                                   isActive ? 'bg-surface-container text-secondary font-semibold border-l-2 border-secondary' : 'hover:bg-surface-container-low'
                                  }`
                                }
                              >
@@ -108,8 +108,8 @@ const AdminLayout: React.FC<{ children: React.ReactNode; title: string; }> = ({ 
                     <NavLink
                       to={link.to!}
                       className={({ isActive }) =>
-                        `flex items-center gap-4 px-4 py-3 my-2 rounded-lg transition-colors text-gray-600 font-semibold ${
-                          isActive ? 'bg-blue-100 text-blue-700' : 'hover:bg-gray-100'
+                        `flex items-center gap-4 px-4 py-3 my-2 rounded-lg transition-colors text-on-surface-variant font-semibold ${
+                          isActive ? 'bg-surface-container text-secondary border-l-2 border-secondary' : 'hover:bg-surface-container-low'
                         }`
                       }
                     >
@@ -121,10 +121,10 @@ const AdminLayout: React.FC<{ children: React.ReactNode; title: string; }> = ({ 
               })}
             </ul>
           </nav>
-          <div className="p-4 border-t border-gray-200">
+          <div className="p-4 border-t border-secondary">
             <button
               onClick={logout}
-              className="flex items-center gap-4 w-full px-4 py-3 rounded-lg hover:bg-red-50 transition-colors text-red-500 font-semibold"
+              className="flex items-center gap-4 w-full px-4 py-3 rounded-lg hover:bg-error-container transition-colors text-error font-semibold"
             >
               <ICONS.LOGOUT className="h-6 w-6" />
               <span>تسجيل الخروج</span>
@@ -133,17 +133,17 @@ const AdminLayout: React.FC<{ children: React.ReactNode; title: string; }> = ({ 
         </aside>
         
         <main className="flex-1 flex flex-col overflow-hidden">
-            <header className="h-20 bg-white border-b border-gray-200 flex items-center justify-between px-8">
-                <h1 className="text-2xl font-bold text-gray-800">{title}</h1>
+            <header className="h-20 bg-primary-container border-b-2 border-secondary flex items-center justify-between px-8">
+                <h1 className="text-2xl font-bold text-primary font-serif">{title}</h1>
                 <div className="flex items-center gap-6">
                     <Notifications />
                     <div className="text-right">
-                        <p className="font-semibold">{user?.name}</p>
-                        <p className="text-sm text-gray-500">{user?.email}</p>
+                        <p className="font-semibold text-on-surface">{user?.name}</p>
+                        <p className="text-sm text-on-surface-variant">{user?.email}</p>
                     </div>
                 </div>
             </header>
-          <div className="flex-1 overflow-y-auto p-8 bg-gray-50">
+          <div className="flex-1 overflow-y-auto p-8 bg-surface">
             {children}
           </div>
         </main>

@@ -25,19 +25,21 @@ const LoginPage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50">
-      <div className="max-w-md w-full p-8 space-y-8 bg-white shadow-lg rounded-xl">
+    <div className="min-h-screen flex items-center justify-center bg-surface">
+      <div className="max-w-md w-full p-8 space-y-8 bg-primary-container shadow-lg rounded-lg border border-secondary">
         <div className="flex flex-col items-center">
-          <LogoIcon className="h-16 w-16" />
-          <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
-            نظام تسجيل المواد الجامعي
-          </h2>
-          <p className="mt-2 text-center text-sm text-gray-600">
+          <div className="nav-header w-full -mx-8 -mt-8 mb-8 pb-6">
+            <LogoIcon className="h-16 w-16 mx-auto mb-4" />
+            <h2 className="text-center text-3xl font-bold text-primary font-serif">
+              نظام تسجيل المواد الجامعي
+            </h2>
+          </div>
+          <p className="text-center text-sm text-on-surface-variant">
             سجل دخولك للمتابعة
           </p>
         </div>
         <form className="mt-8 space-y-6" onSubmit={handleLogin}>
-          <div className="rounded-md shadow-sm -space-y-px">
+          <div className="space-y-4">
             <div>
               <label htmlFor="email-address" className="sr-only">
                 البريد الإلكتروني
@@ -48,7 +50,7 @@ const LoginPage: React.FC = () => {
                 type="email"
                 autoComplete="email"
                 required
-                className="appearance-none rounded-none relative block w-full px-3 py-3 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm"
+                className="input-field w-full px-0 py-3 text-on-surface placeholder-on-surface-variant"
                 placeholder="البريد الإلكتروني"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
@@ -64,7 +66,7 @@ const LoginPage: React.FC = () => {
                 type="password"
                 autoComplete="current-password"
                 required
-                className="appearance-none rounded-none relative block w-full px-3 py-3 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm"
+                className="input-field w-full px-0 py-3 text-on-surface placeholder-on-surface-variant"
                 placeholder="كلمة المرور"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
@@ -73,7 +75,7 @@ const LoginPage: React.FC = () => {
           </div>
           
           <div className="flex items-center justify-between">
-            <p className="text-sm">
+            <p className="text-xs label-caps text-on-surface-variant">
                 Hint: `admin@example.com`, `student@example.com`, or `professor@example.com`
             </p>
           </div>
@@ -82,7 +84,7 @@ const LoginPage: React.FC = () => {
             <button
               type="submit"
               disabled={loading}
-              className="group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors disabled:bg-blue-300 disabled:cursor-not-allowed"
+              className="btn-primary w-full py-3 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {loading ? 'جاري التحقق...' : 'تسجيل الدخول'}
             </button>

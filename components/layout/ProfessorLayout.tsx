@@ -29,12 +29,12 @@ const ProfessorLayout: React.FC<{ children: React.ReactNode; title: string; }> =
   }, [user, courses, professorCourseAssignments]);
   
   return (
-    <div className="flex h-screen bg-gray-50 text-gray-800" dir="rtl">
-      <aside className="w-64 flex-shrink-0 bg-gray-800 text-white flex flex-col">
-        <div className="h-20 flex items-center justify-center border-b border-gray-700 px-4">
+    <div className="flex h-screen bg-surface text-on-surface" dir="rtl">
+      <aside className="w-64 flex-shrink-0 bg-primary-container text-on-surface flex flex-col border-l border-secondary">
+        <div className="h-20 flex items-center justify-center border-b border-secondary px-4">
             <div className="flex items-center gap-3">
                 <LogoIcon className="h-8 w-8"/>
-                <span className="text-xl font-semibold">بوابة الأستاذ</span>
+                <span className="text-xl font-semibold text-primary font-serif">بوابة الأستاذ</span>
             </div>
         </div>
         <nav className="flex-grow px-4 py-4">
@@ -45,7 +45,7 @@ const ProfessorLayout: React.FC<{ children: React.ReactNode; title: string; }> =
                   end
                   className={({ isActive }) =>
                     `flex items-center gap-3 px-4 py-3 my-1 rounded-lg transition-colors ${
-                      isActive ? 'bg-blue-600 text-white' : 'hover:bg-gray-700'
+                      isActive ? 'bg-surface-container text-secondary border-l-2 border-secondary' : 'text-on-surface-variant hover:bg-surface-container-low'
                     }`
                   }
                 >
@@ -55,7 +55,7 @@ const ProfessorLayout: React.FC<{ children: React.ReactNode; title: string; }> =
               </li>
               {profCourses.length > 0 && (
                 <>
-                  <li className="px-4 pt-4 pb-2 text-xs font-semibold text-gray-400 uppercase tracking-wider">
+                  <li className="px-4 pt-4 pb-2 text-xs font-semibold text-on-surface-variant uppercase tracking-wider label-caps">
                     المقررات الدراسية
                   </li>
                   {profCourses.map(course => (
@@ -64,7 +64,7 @@ const ProfessorLayout: React.FC<{ children: React.ReactNode; title: string; }> =
                         to={`/professor/course/${course.id}`}
                         className={({ isActive }) =>
                           `flex items-center gap-3 px-4 py-3 my-1 rounded-lg transition-colors text-sm ${
-                            isActive ? 'bg-blue-600 text-white' : 'hover:bg-gray-700'
+                            isActive ? 'bg-surface-container text-secondary border-l-2 border-secondary' : 'text-on-surface-variant hover:bg-surface-container-low'
                           }`
                         }
                       >
@@ -77,10 +77,10 @@ const ProfessorLayout: React.FC<{ children: React.ReactNode; title: string; }> =
               )}
           </ul>
         </nav>
-        <div className="p-4 border-t border-gray-700">
+        <div className="p-4 border-t border-secondary">
           <button
             onClick={logout}
-            className="flex items-center gap-3 w-full px-4 py-3 rounded-lg hover:bg-red-600/80 transition-colors text-red-300 hover:text-white"
+            className="flex items-center gap-3 w-full px-4 py-3 rounded-lg hover:bg-error-container transition-colors text-error hover:text-on-error"
           >
             <ICONS.LOGOUT className="h-5 w-5" />
             <span>تسجيل الخروج</span>
@@ -89,17 +89,17 @@ const ProfessorLayout: React.FC<{ children: React.ReactNode; title: string; }> =
       </aside>
       
       <main className="flex-1 flex flex-col overflow-hidden">
-        <header className="h-20 bg-white border-b border-gray-200 flex items-center justify-between px-8">
-            <h1 className="text-2xl font-bold text-gray-800">{title}</h1>
+        <header className="h-20 bg-primary-container border-b-2 border-secondary flex items-center justify-between px-8">
+            <h1 className="text-2xl font-bold text-primary font-serif">{title}</h1>
             <div className="flex items-center gap-6">
                 <Notifications />
                 <div className="text-right">
-                    <p className="font-semibold">{user?.name}</p>
-                    <p className="text-sm text-gray-500">{user?.email}</p>
+                    <p className="font-semibold text-on-surface">{user?.name}</p>
+                    <p className="text-sm text-on-surface-variant">{user?.email}</p>
                 </div>
             </div>
         </header>
-        <div className="flex-1 overflow-y-auto p-8">
+        <div className="flex-1 overflow-y-auto p-8 bg-surface">
           {children}
         </div>
       </main>
